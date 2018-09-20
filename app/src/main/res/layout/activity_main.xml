@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mainAppToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppToolBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/logo"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="205dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway"
+            android:paddingStart="20dp"
+            android:text="CORNER COFFEE"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="18dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway"
+            android:paddingLeft="5dp"
+            android:text="SHOP"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="224dp"
+            tools:layout_editor_absoluteY="18dp" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <TextView
+        android:id="@+id/staffTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_sp_staffv2"
+        android:focusable="true"
+        android:fontFamily="@font/raleway"
+        android:onClick="onClick"
+        android:text="STAFF"
+        android:textAlignment="center"
+        android:textColor="#2699FB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/stockTextView"
+        app:layout_constraintEnd_toEndOf="@+id/menuTextView"
+        app:layout_constraintStart_toStartOf="@+id/menuTextView"
+        app:layout_constraintTop_toTopOf="@+id/stockTextView" />
+
+
+    <TextView
+        android:id="@+id/stockTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_sp_stock"
+        android:focusable="true"
+        android:fontFamily="@font/raleway"
+        android:onClick="onClick"
+        android:text="STOCK"
+        android:textAlignment="center"
+        android:textColor="#2699FB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/ordersTextView"
+        app:layout_constraintStart_toStartOf="@+id/ordersTextView"
+        app:layout_constraintTop_toBottomOf="@+id/mainAppToolbar" />
+
+    <TextView
+        android:id="@+id/menuTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_sp_menu"
+        android:focusable="true"
+        android:fontFamily="@font/raleway"
+        android:onClick="onClick"
+        android:text="MENU"
+        android:textAlignment="center"
+        android:textColor="#2699FB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ordersTextView"
+        app:layout_constraintEnd_toEndOf="@+id/posTextView"
+        app:layout_constraintStart_toStartOf="@+id/posTextView"
+        app:layout_constraintTop_toTopOf="@+id/ordersTextView" />
+
+    <TextView
+        android:id="@+id/ordersTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_sp_orders"
+        android:focusable="true"
+        android:fontFamily="@font/raleway"
+        android:onClick="onClick"
+        android:text="ORDERS"
+        android:textAlignment="center"
+        android:textColor="#2699FB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/helpTextView"
+        app:layout_constraintStart_toStartOf="@+id/helpTextView"
+        app:layout_constraintTop_toBottomOf="@+id/stockTextView" />
+
+    <TextView
+        android:id="@+id/posTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_sp_posv2"
+        android:focusable="true"
+        android:fontFamily="@font/raleway"
+        android:onClick="onClick"
+        android:text="POINT OF SALE"
+        android:textAlignment="center"
+        android:textColor="#2699FB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/helpTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/helpTextView" />
+
+    <TextView
+        android:id="@+id/helpTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="80dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_sp_help"
+        android:focusable="true"
+        android:fontFamily="@font/raleway"
+        android:onClick="onClick"
+        android:text="HELP"
+        android:textAlignment="center"
+        android:textColor="#2699FB"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ordersTextView" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05109489" />
+
+
+</android.support.constraint.ConstraintLayout>

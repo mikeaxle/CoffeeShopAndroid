@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorSecondary">@color/colorSecondary</item>-->
+        <!--<item name="colorTertiary">@color/colorTertiary</item>-->
+    </style>
+
+    <!-- Toolbar blue -->
+    <style name="AppToolBar">
+        <item name="android:layout_weight">0</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!-- Toolbar white -->
+    <style name="AppToolBarWhite">
+        <item name="android:layout_weight">0</item>
+        <!--<item name="android:background">#fff</item>-->
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
+    <!-- button style-->
+    <style name="LargeBlueButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+</resources>

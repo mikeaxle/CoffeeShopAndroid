@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "665237596145",
+    "firebase_url": "https://coffee-shop-app-d8f60.firebaseio.com",
+    "project_id": "coffee-shop-app-d8f60",
+    "storage_bucket": "coffee-shop-app-d8f60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665237596145:android:c8d891141ab2e949",
+        "android_client_info": {
+          "package_name": "com.itsp20032018.coffeeshop.coffeeshopapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665237596145-oujbpqog6p97l56ga3gh8cs891bsm42k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.itsp20032018.coffeeshop.coffeeshopapp",
+            "certificate_hash": "5cadf126260c07ed01b80e4413d188c5f0548450"
+          }
+        },
+        {
+          "client_id": "665237596145-55i81nbq3u504eb9u0lte3sbl8jlcdqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWdJwvimUUahRdTuTlCEuGzrDV2zsjBHQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665237596145-55i81nbq3u504eb9u0lte3sbl8jlcdqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

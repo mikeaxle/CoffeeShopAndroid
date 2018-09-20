@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Coffee Shop Android</string>
+    <string name="title_staffmember_list">Staff</string>
+    <string name="title_staffmember_detail">Staff Member Detail</string>
+    <string name="title_stockitem_list">Stock</string>
+    <string name="title_stockitem_detail">StockItem Detail</string>
+    <string name="title_menuitem_list">Menu</string>
+    <string name="title_menuitem_detail">MenuItem Detail</string>
+    <string name="title_order_list">Orders</string>
+    <string name="title_order_detail">Order Detail</string>
+    <string name="title_pos">POS</string>
+    <string name="title_help">Help</string>
+</resources>

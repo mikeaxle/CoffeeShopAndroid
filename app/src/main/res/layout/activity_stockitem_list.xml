@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context=".StockItemListActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/stockAppToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppToolBarWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway"
+            android:paddingEnd="30dp"
+            android:paddingStart="0dp"
+            android:text="INVENTORY"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="18dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <GridView
+        android:id="@+id/stockGridView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:columnWidth="165dp"
+        android:gravity="center"
+        android:horizontalSpacing="16dp"
+        android:numColumns="2"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/addStockbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockAppToolbar" />
+
+    <Button
+        android:id="@+id/addStockbutton"
+        style="@style/LargeBlueButton"
+        android:layout_height="81dp"
+        android:onClick="onClick"
+        android:text="add stock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/noStockTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:text="Your inventory is empty! Tap the ADD STOCK button to add items."
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
