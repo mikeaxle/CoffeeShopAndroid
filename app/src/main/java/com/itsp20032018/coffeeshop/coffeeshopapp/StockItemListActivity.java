@@ -37,17 +37,7 @@ public class StockItemListActivity extends AppCompatActivity {
     // TAG
     private static final String TAG = "StockItemListActivity";
 
-    // FireBase database instance
-    FirebaseFirestore db;
-
-    // FireBase list reference
-    CollectionReference listRef;
-
-    // Array List to store items
-    ArrayList<StockItem> stockItems;
-
-    // grid list to display items
-    GridView stockGridView;
+    final Class _class = StockItem.class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,32 +57,38 @@ public class StockItemListActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        // set up variables
-        db = FirebaseFirestore.getInstance();
-        listRef = db.collection("stock");
-        stockItems = new ArrayList<StockItem>();
-        stockGridView = (GridView) findViewById(R.id.stockGridView);
-
         // load list
-        loadItems();
+        loadItems("stock", R.id.stockGridView);
     }
 
     /**
      * loadItems - loads list
      */
-    //TODO: turn into static global method that takes item type: string, item type: ArrayList<item type>, gridview
-    private void loadItems() {
-        /**
-         * add listener to item list reference
-         * this watches FireBase for any changes in the data this is what makes the list load update in RealTime
-         */
+    //TODO: turn into static global method that takes item type: string, gridview,
+    private void loadItems(final String itemType, int itemGridViewID) {
+        /** set up variables **/
+
+        // FireBase database instance
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // FireBase list reference
+        CollectionReference listRef  = db.collection(itemType);
+
+
+        // assign gridView
+        final GridView itemGridView = (GridView) findViewById(itemGridViewID);
+
+        // Array List to store items
+        final ArrayList<Class<?>> itemArrayList = new ArrayList<>();
+
+        // add snapshot listener - updates list when changes to data are made
         listRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 // check for error
                 if (e != null) {
                     // show toast
-                    Toast.makeText(StockItemListActivity.this, "Error while fetching data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Error while fetching data", Toast.LENGTH_SHORT).show();
                     // log to console
                     Log.d(TAG, e.toString());
                     return;
@@ -100,23 +96,37 @@ public class StockItemListActivity extends AppCompatActivity {
 
                 // check if there are results from search
                 if (queryDocumentSnapshots != null) {
+
                     // convert results to temporary list
-                    List<StockItem> itemList = queryDocumentSnapshots.toObjects(StockItem.class);
+                    List<Class<?>> itemList = queryDocumentSnapshots.toObjects(_class);
+
+//                    for(DocumentChange item: queryDocumentSnapshots.getDocumentChanges()){
+//                        switch(item.getType()) {
+//                            case ADDED:
+//                                break;
+//                            case MODIFIED:
+//                                break;
+//                            case REMOVED:
+//                                break;
+//
+//                        }
+//                    }
 
                     // add temporary list to items array list
-                    stockItems.addAll(itemList);
+                    itemArrayList.addAll(itemList);
 
                     // add items array list to list adapter up list adapter
-                    CustomAdapter adapter = new CustomAdapter(StockItemListActivity.this, R.layout.stockitem_list_content, "stock");
-                    adapter.addAll(stockItems);
+                    CustomAdapter adapter = new CustomAdapter(getBaseContext(), R.layout.stockitem_list_content, itemType);
+                    adapter.notifyDataSetChanged();
+                    adapter.addAll(itemArrayList);
 
-                    if (stockItems.size() != 0) {
-                        stockGridView.setAdapter(adapter);
+                    if (itemArrayList.size() != 0) {
+                        itemGridView.setAdapter(adapter);
 
                         // set up grid list click listener
-                        stockGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        itemGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                Toast.makeText(StockItemListActivity.this, "" + position,
+                                Toast.makeText(getBaseContext(), "" + position,
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
