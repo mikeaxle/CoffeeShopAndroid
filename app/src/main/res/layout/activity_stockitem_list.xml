@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="#fff"
     tools:context=".StockItemListActivity">
 
@@ -18,7 +19,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/stockListTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway"
@@ -33,25 +34,42 @@
             tools:layout_editor_absoluteY="18dp" />
     </android.support.v7.widget.Toolbar>
 
-    <GridView
-        android:id="@+id/stockGridView"
+    <!--<GridView-->
+        <!--android:id="@+id/stockGridView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:columnWidth="165dp"-->
+        <!--android:gravity="center"-->
+        <!--android:horizontalSpacing="16dp"-->
+        <!--android:numColumns="2"-->
+        <!--android:paddingEnd="15dp"-->
+        <!--android:paddingStart="15dp"-->
+        <!--android:paddingTop="15dp"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:verticalSpacing="20dp"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/addStockbutton"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/stockAppToolbar" />-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/stockRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:columnWidth="165dp"
         android:gravity="center"
-        android:horizontalSpacing="16dp"
-        android:numColumns="2"
         android:paddingEnd="15dp"
         android:paddingStart="15dp"
         android:paddingTop="15dp"
-        android:stretchMode="columnWidth"
         android:verticalSpacing="20dp"
         app:layout_constraintBottom_toTopOf="@+id/addStockbutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockAppToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/stockAppToolbar"
+        />
 
     <Button
         android:id="@+id/addStockbutton"
@@ -72,7 +90,7 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

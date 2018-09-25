@@ -3,27 +3,19 @@ package com.itsp20032018.coffeeshop.coffeeshopapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.CustomAdapter;
+import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
-import javax.annotation.Nullable;
 
 /**
  * An activity representing a list of Stock. This activity
@@ -34,109 +26,99 @@ import javax.annotation.Nullable;
  * item details side-by-side using two vertical panes.
  */
 public class StockItemListActivity extends AppCompatActivity {
-    // TAG
+    // TAG for device logs
     private static final String TAG = "StockItemListActivity";
 
-    final Class _class = StockItem.class;
+    // FireBase database instance
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // FireBase list reference
+    CollectionReference listRef  = db.collection("stock");
+
+    // RecyclerView
+    RecyclerView stockRecyclerView;
+
+    // custom adapter
+    private ItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stockitem_list);
 
-        // set up custome tool bar
+        // set up custom tool bar
         Toolbar appToolbar = (Toolbar) findViewById(R.id.stockAppToolbar);
         setSupportActionBar(appToolbar);
 
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // load list
+        loadList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        // load list
-        loadItems("stock", R.id.stockGridView);
+        // start listening for changes in FireStore
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // stop listening for changes in FireStore
+        adapter.stopListening();
     }
 
     /**
-     * loadItems - loads list
+     * loadList     method to set up recycler view and load list
      */
-    //TODO: turn into static global method that takes item type: string, gridview,
-    private void loadItems(final String itemType, int itemGridViewID) {
-        /** set up variables **/
+    private void loadList() {
+        // create FireStore query
+//        Query query = listRef.orderBy("quantity", Query.Direction.DESCENDING);
 
-        // FireBase database instance
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // create FireStore recycler options
+        FirestoreRecyclerOptions<StockItem> options =  new FirestoreRecyclerOptions.Builder<StockItem>()
+                .setQuery(listRef, StockItem.class)
+                .build();
 
-        // FireBase list reference
-        CollectionReference listRef  = db.collection(itemType);
+        // assign ItemAdapter, type is the item type to list
+        adapter = new ItemAdapter(options, "stock");
 
+        // get recycler view
+        stockRecyclerView = (RecyclerView) findViewById(R.id.stockRecyclerView);
 
-        // assign gridView
-        final GridView itemGridView = (GridView) findViewById(itemGridViewID);
+        // create new layout manager - can be set to gridLayout or linerLayout manager
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
 
-        // Array List to store items
-        final ArrayList<Class<?>> itemArrayList = new ArrayList<>();
+        // set layout to grid
+        stockRecyclerView.setLayoutManager(layoutManager);
 
-        // add snapshot listener - updates list when changes to data are made
-        listRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        // set recycler view adapter to ItemAdapter
+        stockRecyclerView.setAdapter(adapter);
+
+        // set click listener
+        adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                // check for error
-                if (e != null) {
-                    // show toast
-                    Toast.makeText(getBaseContext(), "Error while fetching data", Toast.LENGTH_SHORT).show();
-                    // log to console
-                    Log.d(TAG, e.toString());
-                    return;
-                }
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                // create intent
+                Intent i = new Intent(getApplicationContext(), StockItemDetailActivity.class);
 
-                // check if there are results from search
-                if (queryDocumentSnapshots != null) {
+                // get reference to object and store in string
+                String path = documentSnapshot.getReference().getPath();
 
-                    // convert results to temporary list
-                    List<Class<?>> itemList = queryDocumentSnapshots.toObjects(_class);
+                // add extras
+                i.putExtra("PATH", path);
 
-//                    for(DocumentChange item: queryDocumentSnapshots.getDocumentChanges()){
-//                        switch(item.getType()) {
-//                            case ADDED:
-//                                break;
-//                            case MODIFIED:
-//                                break;
-//                            case REMOVED:
-//                                break;
-//
-//                        }
-//                    }
+                // set mode to edit
+                i.putExtra("MODE", "edit");
 
-                    // add temporary list to items array list
-                    itemArrayList.addAll(itemList);
-
-                    // add items array list to list adapter up list adapter
-                    CustomAdapter adapter = new CustomAdapter(getBaseContext(), R.layout.stockitem_list_content, itemType);
-                    adapter.notifyDataSetChanged();
-                    adapter.addAll(itemArrayList);
-
-                    if (itemArrayList.size() != 0) {
-                        itemGridView.setAdapter(adapter);
-
-                        // set up grid list click listener
-                        itemGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                Toast.makeText(getBaseContext(), "" + position,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        // show no items text
-                        TextView noContentTextView = (TextView) findViewById(R.id.noStockTextView);
-                        noContentTextView.setVisibility(View.VISIBLE);
-
-                    }
-                }
+                // start activity
+                startActivity(i);
             }
         });
     }
@@ -160,6 +142,10 @@ public class StockItemListActivity extends AppCompatActivity {
     void onClick(View view) {
         // go to add stock screen
         Intent i = new Intent(this, StockItemDetailActivity.class);
+
+        // set mode to edit
+        i.putExtra("MODE", "add");
+
         startActivity(i);
     }
 }

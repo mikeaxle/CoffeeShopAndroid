@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="165dp"
     android:layout_height="165dp"
+    android:layout_marginBottom="10dp"
     android:background="#F1F9FF">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,13 +14,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="23dp"
-        android:src="@android:drawable/screen_background_dark"
-        app:layout_constraintEnd_toEndOf="@+id/stockNameTextView"
-        app:layout_constraintStart_toStartOf="@+id/stockNameTextView"
+        android:src="@drawable/ic_sp_camera"
+        app:civ_border_color="#B3B3B3"
+        app:civ_border_width="1dp"
+        app:layout_constraintEnd_toEndOf="@+id/stockNameDetailTextView"
+        app:layout_constraintStart_toStartOf="@+id/stockNameDetailTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/stockNameTextView"
+        android:id="@+id/stockNameDetailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -47,6 +50,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/stockNameDetailTextView"
         app:layout_constraintVertical_bias="0.06999999" />
 </android.support.constraint.ConstraintLayout>
