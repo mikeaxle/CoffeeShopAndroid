@@ -58,7 +58,6 @@
                 android:paddingStart="0dp"
                 android:text="EDITING "
                 android:textAlignment="center"
-                android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold"

@@ -2,10 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorSecondary">@color/colorSecondary</item>-->
-        <!--<item name="colorTertiary">@color/colorTertiary</item>-->
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="cardViewStyle">@style/CardView</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorTertiary</item>
+        <item name="colorPrimaryDark">@color/colorSecondary</item>
     </style>
 
     <!-- Toolbar blue -->
@@ -36,5 +37,6 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#fff</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
     </style>
 </resources>
