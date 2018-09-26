@@ -11,6 +11,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.itsp20032018.coffeeshop.coffeeshopapp.R;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
 import com.squareup.picasso.Picasso;
@@ -24,6 +25,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
 
     // item click listener
     OnItemClickListener listener;
+    com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter.OnItemLongClickListener longListener;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -55,7 +57,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
 
             // assign views
             stockItemImage = (CircleImageView) itemView.findViewById(R.id.stockImageView);
-            stockName = (TextView) itemView.findViewById(R.id.stockNameDetailTextView);
+            stockName = (TextView) itemView.findViewById(R.id.stockNameTextView);
             stockQty = (TextView) itemView.findViewById(R.id.stockQuantityTextView);
 
             // set click listener
@@ -108,6 +110,54 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
         }
     }
 
+    // staff holder
+    class MenuHolder extends RecyclerView.ViewHolder {
+
+        // declare views
+        CircleImageView menuItemImage;
+        TextView menuItemName;
+        TextView menuPrice;
+
+        public MenuHolder(View itemView) {
+            super(itemView);
+
+            // assign views
+            menuItemImage = (CircleImageView) itemView.findViewById(R.id.menuImageView);
+            menuItemName = (TextView) itemView.findViewById(R.id.menuNameTextView);
+            menuPrice = (TextView) itemView.findViewById(R.id.menuPriceTextView);
+
+            // set click listener
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // get item position in adapter
+                    int position = getAdapterPosition();
+
+                    // check if position is null or listener is null
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        DocumentSnapshot qs = (DocumentSnapshot) getSnapshots().getSnapshot(position);
+                        listener.onItemClick(qs, position);
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    // get item position in adapter
+                    int position = getAdapterPosition();
+
+                    // check if position is null or listener is null
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        DocumentSnapshot qs = (DocumentSnapshot) getSnapshots().getSnapshot(position);
+                        longListener.onItemLongClick(qs, position);
+                    }
+                    return  true;
+                }
+            });
+        }
+    }
+
 
     /**
      * @param holder   object containing general view item
@@ -146,6 +196,21 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
                 // set staff member address
                 ((StaffHolder) holder).staffAddress.setText(String.valueOf(staffMember.getAddress()));
                 break;
+            case "menu":
+                // cast model to stock item
+                MenuEntry menuItem = (MenuEntry) model;
+
+                // download image using image url and set to menu item image
+                if (!menuItem.getImage().equals(""))
+                    Picasso.get().load(menuItem.getImage()).into(((MenuHolder) holder).menuItemImage);
+
+                // set menu item name
+                ((MenuHolder) holder).menuItemName.setText(menuItem.getName());
+
+                // set menu item price
+                ((MenuHolder) holder).menuPrice.setText(String.valueOf("R" + menuItem.getPrice()));
+                break;
+
         }
 
     }
@@ -177,6 +242,13 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
                         .inflate(R.layout.staffmember_list_content, parent, false);
                 // return new StockHolder view holder object
                 return new StaffHolder(view);
+            case "menu":
+                // inflate view using stock item xml
+                view = LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.menuitem_list_content, parent, false);
+                // return new StockHolder view holder object
+                return new MenuHolder(view);
 
             // TODO: add other list items
         }
@@ -190,6 +262,14 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longListener = listener;
     }
 
 
