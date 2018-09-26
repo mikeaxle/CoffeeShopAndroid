@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/colorSecondary"
-android:fitsSystemWindows="true"
-tools:context=".StaffMemberDetailActivity">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSecondary"
+    android:fitsSystemWindows="true"
+
+    tools:context=".StaffMemberDetailActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/staffLoadingLayout"
@@ -31,337 +33,81 @@ tools:context=".StaffMemberDetailActivity">
     </android.support.constraint.ConstraintLayout>
 
 
-<android.support.v7.widget.Toolbar
-    android:id="@+id/staffAppToolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:theme="@style/AppToolBarWhite"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/staffAppToolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/staffDetailTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/raleway"
-            android:paddingEnd="30dp"
-            android:paddingStart="0dp"
-            android:text="EDITING "
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/staffDeleteButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/staffDeleteButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:onClick="deleteItem"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_sp_delete" />
-
-    </android.support.constraint.ConstraintLayout>
-
-
-</android.support.v7.widget.Toolbar>
-
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/staffCardView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppToolBarWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/staffAppToolbar">
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/staffDetailImageView"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="selectImage"
-                android:src="@drawable/sp_camera"
-                app:civ_border_color="#B3B3B3"
-                app:civ_border_width="1dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/staffIDDetailTextView" />
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/staffIDDetailTextView"
+                android:id="@+id/staffDetailTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Staff ID:"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/staffDetailImageView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/staffNameDetailInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/staffDetailImageView"
-                app:layout_constraintTop_toBottomOf="@+id/staffIDDetailTextView">
-
-                <EditText
-                    android:id="@+id/staffNameDetailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="@font/montserrat"
-                    android:hint="First Name"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="22sp" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/staffSurnameDetailInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/staffNameDetailInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/staffNameDetailInputLayout">
-
-                <EditText
-                    android:id="@+id/staffSurnameDetailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="@font/montserrat"
-                    android:hint="First Name"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="22sp" />
-            </android.support.design.widget.TextInputLayout>
-
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
-
-<android.support.v7.widget.CardView
-    android:id="@+id/staffCardView3"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="19dp"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="0dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/staffCardView2">
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/staffPhoneInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/staffEmailInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <EditText
-                android:id="@+id/staffPhoneEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:fontFamily="@font/montserrat"
-                android:hint="Phone number"
-                android:inputType="phone"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-        </android.support.design.widget.TextInputLayout>
-        <View
-            style="@style/Divider"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/staffPhoneInputLayout"
-            app:layout_constraintBottom_toTopOf="@+id/staffEmailInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/staffEmailInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/staffAddressInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/staffPhoneInputLayout">
-
-            <EditText
-                android:id="@+id/staffEmailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:fontFamily="@font/montserrat"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <View
-            style="@style/Divider"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/staffEmailInputLayout"
-            app:layout_constraintBottom_toTopOf="@+id/staffAddressInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/staffAddressInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/staffEmailInputLayout">
-
-            <EditText
-                android:id="@+id/staffAddressTextEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:fontFamily="@font/montserrat"
-                android:hint="Address"
-                android:inputType="textMultiLine|textPostalAddress"
-                android:singleLine="false"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-
-        </android.support.design.widget.TextInputLayout>
-
-    </android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="19dp"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/staffCardView3">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
-
-            <Spinner
-                android:id="@+id/staffJobRoleSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="5dp"
-                android:entries="@array/job_role_array"
-                app:layout_constraintBottom_toTopOf="@+id/staffGenderSpinner"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                style="@style/Divider"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/staffGenderSpinner"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Spinner
-                android:id="@+id/staffGenderSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:entries="@array/gender_array"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/raleway"
+                android:paddingEnd="30dp"
+                android:paddingStart="0dp"
+                android:text="EDITING "
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/staffDeleteButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/staffJobRoleSpinner" />
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/staffDeleteButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:onClick="deleteItem"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_sp_delete" />
 
         </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
 
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/staffDetailScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/addStaffDetailbutton"
+        app:layout_constraintTop_toBottomOf="@+id/staffAppToolbar">
+
+        <include
+            layout="@layout/staffmember_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp" />
+    </ScrollView>
 
     <Button
-        android:id="@+id/addStaffbutton"
+        android:id="@+id/addStaffDetailbutton"
         style="@style/LargeBlueButton"
         android:layout_height="81dp"
         android:onClick="save"
         android:text="save"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/staffDetailScrollView" />
 </android.support.constraint.ConstraintLayout>

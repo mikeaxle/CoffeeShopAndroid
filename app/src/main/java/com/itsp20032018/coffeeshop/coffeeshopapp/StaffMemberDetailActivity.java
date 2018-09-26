@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import pl.aprilapps.easyphotopicker.EasyImageConfig;
@@ -82,8 +83,8 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
     TextView staffID;
     EditText firstName;
     EditText lastName;
-    Spinner role;
-    Spinner gender;
+    MaterialSpinner role;
+    MaterialSpinner gender;
     EditText address;
     EditText phoneNumber;
     EditText emailAddress;
@@ -125,15 +126,13 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         staffID = (TextView) findViewById(R.id.staffIDDetailTextView);
         firstName = (EditText) findViewById(R.id.staffNameDetailEditText);
         lastName = (EditText) findViewById(R.id.staffSurnameDetailEditText);
-        role = (Spinner) findViewById(R.id.staffJobRoleSpinner);
-        gender = (Spinner) findViewById(R.id.staffGenderSpinner);
         address = (EditText) findViewById(R.id.staffAddressTextEdit);
         phoneNumber = (EditText) findViewById(R.id.staffPhoneEditText);
         emailAddress = (EditText) findViewById(R.id.staffEmailEditText);
 
 
         image = (CircleImageView) findViewById(R.id.staffDetailImageView);
-        save = (Button) findViewById(R.id.addStaffbutton);
+        save = (Button) findViewById(R.id.addStaffDetailbutton);
         loadLayout = (ConstraintLayout) findViewById(R.id.staffLoadingLayout);
         loadingBar = (BookLoading) findViewById(R.id.staffLoadingBar);
 
@@ -143,6 +142,18 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         } else {
             title.setText("adding new staff member");
         }
+
+        // set up spinners
+        role = (MaterialSpinner) findViewById(R.id.staffJobRoleSpinner);
+        ArrayAdapter<String> roleSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.job_role_array));
+        roleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        role.setAdapter(roleSpinnerAdapter);
+
+        gender = (MaterialSpinner) findViewById(R.id.staffGenderSpinner);
+        ArrayAdapter<String> genderSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.gender_array));
+        genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender.setAdapter(genderSpinnerAdapter);
+
     }
 
     @Override
@@ -170,8 +181,8 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                         staffID.setText("staff ID: " + documentSnapshot.getId());
                         firstName.setText(staffMember.getFirstName());
                         lastName.setText(staffMember.getLastName());
-                        role.setSelection(getIndexOfItem("role"), true);
-                        gender.setSelection(getIndexOfItem("gender"), true);
+                        role.setSelection(getIndexOfItem("role") + 1);
+                        gender.setSelection(getIndexOfItem("gender") + 1);
                         address.setText(staffMember.getAddress());
                         phoneNumber.setText(staffMember.getPhoneNumber());
                         emailAddress.setText(staffMember.getEmailAddress());
@@ -269,8 +280,8 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                             staffID.setText("staff ID: " + documentSnapshot.getId());
                             firstName.setText(staffMember.getFirstName());
                             lastName.setText(staffMember.getLastName());
-                            role.setSelection(getIndexOfItem("role"), true);
-                            gender.setSelection(getIndexOfItem("gender"), true);
+                            role.setSelection(getIndexOfItem("role") + 1);
+                            gender.setSelection(getIndexOfItem("gender") + 1);
                             address.setText(staffMember.getAddress());
                             phoneNumber.setText(staffMember.getPhoneNumber());
                             emailAddress.setText(staffMember.getEmailAddress());
@@ -337,8 +348,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
 
         // get text from views and initialize new staff item with default staff image
         final StaffMember newStaffMember = new StaffMember(firstName.getText().toString(), lastName.getText().toString(),
-                role.getSelectedItem().toString(), gender.getSelectedItem().toString(), address.getText().toString(),
-                phoneNumber.getText().toString(), emailAddress.getText().toString(), "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
+                role.getItemAtPosition(role.getSelectedItemPosition() - 1).toString(), gender.getItemAtPosition(gender.getSelectedItemPosition() - 1).toString(),
+                address.getText().toString(), phoneNumber.getText().toString(), emailAddress.getText().toString(),
+                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
 
         // check if image was selected or image was changed
         if (isImageChanged) {
