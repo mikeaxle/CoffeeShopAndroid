@@ -32,7 +32,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/staffAppToolbar"
         android:layout_width="match_parent"

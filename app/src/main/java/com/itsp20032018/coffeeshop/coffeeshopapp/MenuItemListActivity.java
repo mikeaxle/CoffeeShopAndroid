@@ -60,7 +60,7 @@ public class MenuItemListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // set up button & click listener
-        addMenuButton = (Button) findViewById(R.id.addMenuButton);
+        addMenuButton = (Button) findViewById(R.id.addOrderButton);
         addMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

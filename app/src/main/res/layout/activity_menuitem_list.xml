@@ -18,20 +18,62 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <TextView
-            android:id="@+id/menuTitleTextView"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway"
-            android:paddingEnd="30dp"
-            android:paddingStart="0dp"
-            android:text="MENU"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="56dp"
-            tools:layout_editor_absoluteY="18dp" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/staffDetailTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/raleway"
+                android:paddingEnd="30dp"
+                android:paddingStart="0dp"
+                android:text="EDITING "
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/menuAddMenuItem"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/menuAddMenuItem"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/addOrderButtonTop"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_sp_add" />
+
+            <ImageButton
+                android:id="@+id/addOrderButtonTop"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_sp_cart" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
@@ -45,13 +87,13 @@
         android:paddingStart="15dp"
         android:paddingTop="15dp"
         android:verticalSpacing="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/addMenuButton"
+        app:layout_constraintBottom_toTopOf="@+id/addOrderButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuAppToolbar" />
 
     <Button
-        android:id="@+id/addMenuButton"
+        android:id="@+id/addOrderButton"
         style="@style/LargeBlueButton"
         android:layout_height="81dp"
         android:enabled="false"
