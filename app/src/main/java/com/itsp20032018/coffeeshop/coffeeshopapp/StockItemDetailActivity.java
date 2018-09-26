@@ -86,9 +86,11 @@ public class StockItemDetailActivity extends AppCompatActivity {
     Switch available;
     Button save;
 
+    // loading views
     ConstraintLayout loadLayout;
     BookLoading loadingBar;
 
+    // image variables
     CircleImageView image;
     File newImage = null;
     boolean isImageChanged = false;
@@ -101,7 +103,6 @@ public class StockItemDetailActivity extends AppCompatActivity {
         // set up custom tool bar
         Toolbar appToolbar = (Toolbar) findViewById(R.id.stockAppToolbar);
         setSupportActionBar(appToolbar);
-
 
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -157,7 +158,8 @@ public class StockItemDetailActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         // cast to item
                         stockItem = documentSnapshot.toObject(StockItem.class);
-                        // assign view
+
+                        // assign views
                         title.setText("editing '" + stockItem.getName() + "'");
                         stockID.setText("Stock ID: " + documentSnapshot.getId());
                         name.setText(stockItem.getName());
@@ -167,8 +169,6 @@ public class StockItemDetailActivity extends AppCompatActivity {
                         available.setChecked(stockItem.isAvailable());
 
                         // TODO: fix bug where image changed does not load into imageview because of real time sync
-//                        if (!stockItem.getImage().equals(""))
-//                            Picasso.get().load(stockItem.getImage()).into(image);
                     }
                 }
             });
@@ -232,6 +232,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
 
     /**
      * selectImage      method to bring up image picker. allows user to pick image from gallery or take new picture
+     *
      * @param view
      */
     void selectImage(View view) {
@@ -241,7 +242,8 @@ public class StockItemDetailActivity extends AppCompatActivity {
 
     /**
      * loadEdit     method to load existing data into views
-     * @param path  this is the FireStore path for the document to fetch
+     *
+     * @param path this is the FireStore path for the document to fetch
      */
     void loadEdit(String path) {
         // get FireStore document
@@ -254,6 +256,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             // cast to item
                             stockItem = documentSnapshot.toObject(StockItem.class);
+
                             // assign view
                             stockID.setText("Stock ID: " + documentSnapshot.getId());
                             name.setText(stockItem.getName());
@@ -289,7 +292,6 @@ public class StockItemDetailActivity extends AppCompatActivity {
 
     }
 
-
     /**
      * save     method to save changes to FireBase
      *
@@ -302,10 +304,13 @@ public class StockItemDetailActivity extends AppCompatActivity {
         showLoadingBar();
 
         // get text from views and initialize new stock item with default stock image
-        final StockItem newStockItem = new StockItem(name.getText().toString(), Double.parseDouble(price.getText().toString()), Double.parseDouble(stockLevel.getText().toString()), Double.parseDouble(stockReorder.getText().toString()), "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/stock%2Fsp_camera.png?alt=media&token=0324360a-0b3f-412c-8a8e-f836009c5dea", available.isChecked());
+        final StockItem newStockItem = new StockItem(name.getText().toString(), Double.parseDouble(price.getText().toString()),
+                Double.parseDouble(stockLevel.getText().toString()), Double.parseDouble(stockReorder.getText().toString()),
+                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/stock%2Fsp_camera.png?alt=media&token=0324360a-0b3f-412c-8a8e-f836009c5dea",
+                available.isChecked());
 
         // check if image was selected or image was changed
-        if(isImageChanged){
+        if (isImageChanged) {
             // create reference to FireBase storage with image name as file name
             imageRef = storageRef.child(newImage.getName());
 
@@ -340,7 +345,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
                             saveToFireBase(newStockItem);
                         } else {
                             // show error toast
-                            Toast.makeText(StockItemDetailActivity.this, "getting image download url failed" , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(StockItemDetailActivity.this, "getting image download url failed", Toast.LENGTH_SHORT).show();
 
                             // log error
                             Log.e(TAG, "getting image download url failed");
@@ -362,7 +367,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
             }
         } else {
             // check if mode is edit
-            if(mode.equals("edit")){
+            if (mode.equals("edit")) {
                 // set new stock item image to old stock item image
                 newStockItem.setImage(stockItem.getImage());
             }
@@ -375,7 +380,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
      * showLoadingBar       method to show/hide loading bar
      */
     private void showLoadingBar() {
-        if(!loadingBar.isStart()) {
+        if (!loadingBar.isStart()) {
             // show fullscreen white background
             loadLayout.setVisibility(View.VISIBLE);
 
@@ -398,7 +403,8 @@ public class StockItemDetailActivity extends AppCompatActivity {
 
     /**
      * saveToFireBase       method that adds new item to FireBase or updates an existing one based on 'mode' setting
-     * @param newStockItem  custom object to save to FireBase
+     *
+     * @param newStockItem custom object to save to FireBase
      */
     private void saveToFireBase(StockItem newStockItem) {
         // check mode
@@ -423,7 +429,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
                                 Toast.makeText(StockItemDetailActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                 // log error
-                                Log.e(TAG,"Something went wrong: " + e.getMessage() );
+                                Log.e(TAG, "Something went wrong: " + e.getMessage());
 
                                 // hide loading bar
                                 showLoadingBar();
@@ -450,7 +456,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
                                 Toast.makeText(StockItemDetailActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                 // log error
-                                Log.e(TAG,"Something went wrong: " + e.getMessage() );
+                                Log.e(TAG, "Something went wrong: " + e.getMessage());
 
                                 // hide loading bar
                                 showLoadingBar();
@@ -465,6 +471,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
      * deleteItem       method to delete item from FireStore
      */
     void deleteItem(View view) {
+        // TODO: add dialog to confirm/decline delete
         // check is in edit mode
         if (mode.equals("edit")) {
             // show loading bar

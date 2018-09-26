@@ -10,4 +10,13 @@
     <string name="title_order_detail">Order Detail</string>
     <string name="title_pos">POS</string>
     <string name="title_help">Help</string>
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="job_role_array">
+        <item>Barista</item>
+        <item>Chef</item>
+        <item>Manager</item>
+    </string-array>
 </resources>

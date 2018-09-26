@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,8 +39,12 @@ public class StockItemListActivity extends AppCompatActivity {
     // RecyclerView
     RecyclerView stockRecyclerView;
 
+    // add stock button
+    Button addStockButton;
+
     // custom adapter
     private ItemAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,21 @@ public class StockItemListActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // set up button & click listener
+        addStockButton = (Button) findViewById(R.id.addStockbutton);
+        addStockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // go to add staff detail screen
+                Intent i = new Intent(getApplicationContext(), StockItemDetailActivity.class);
+
+                // set mode to edit
+                i.putExtra("MODE", "add");
+
+                startActivity(i);
+            }
+        });
 
         // load list
         loadList();
@@ -85,6 +105,7 @@ public class StockItemListActivity extends AppCompatActivity {
         FirestoreRecyclerOptions<StockItem> options =  new FirestoreRecyclerOptions.Builder<StockItem>()
                 .setQuery(listRef, StockItem.class)
                 .build();
+
 
         // assign ItemAdapter, type is the item type to list
         adapter = new ItemAdapter(options, "stock");
@@ -121,31 +142,18 @@ public class StockItemListActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        // TODO: show text when no stock items are in list
+
     }
 
     /**
      * onSupportNavigateUp -  Return to previous activity/screen
-     *
      * @return boolean
      */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    /**
-     * onClick - add stock handle button click
-     *
-     * @param view
-     */
-    void onClick(View view) {
-        // go to add stock screen
-        Intent i = new Intent(this, StockItemDetailActivity.class);
-
-        // set mode to edit
-        i.putExtra("MODE", "add");
-
-        startActivity(i);
     }
 }

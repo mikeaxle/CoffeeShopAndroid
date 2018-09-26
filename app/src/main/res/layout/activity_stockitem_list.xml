@@ -34,26 +34,6 @@
             tools:layout_editor_absoluteY="18dp" />
     </android.support.v7.widget.Toolbar>
 
-    <!--<GridView-->
-        <!--android:id="@+id/stockGridView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:columnWidth="165dp"-->
-        <!--android:gravity="center"-->
-        <!--android:horizontalSpacing="16dp"-->
-        <!--android:numColumns="2"-->
-        <!--android:paddingEnd="15dp"-->
-        <!--android:paddingStart="15dp"-->
-        <!--android:paddingTop="15dp"-->
-        <!--android:stretchMode="columnWidth"-->
-        <!--android:verticalSpacing="20dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/addStockbutton"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/stockAppToolbar" />-->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stockRecyclerView"
         android:layout_width="match_parent"
