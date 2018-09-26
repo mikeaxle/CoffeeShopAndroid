@@ -61,19 +61,12 @@ public class MenuItemListActivity extends AppCompatActivity {
 
         // set up button & click listener
         addMenuButton = (Button) findViewById(R.id.addOrderButton);
-        addMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MenuItemListActivity.this, "TODO: Go to order Screen", Toast.LENGTH_SHORT).show();
-                // TODO: go to order detail screen with new order
-//                Intent i = new Intent(getApplicationContext(), MenuItemDetailActivity.class);
-//
-//                // set mode to edit
-//                i.putExtra("MODE", "add");
-//
-//                startActivity(i);
-            }
-        });
+//        addMenuButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                createNewOrder();
+//            }
+//        });
 
         // load list
         loadList();
@@ -104,7 +97,7 @@ public class MenuItemListActivity extends AppCompatActivity {
 //        Query query = listRef.orderBy("quantity", Query.Direction.DESCENDING);
 
         // create FireStore recycler options
-        FirestoreRecyclerOptions<MenuEntry> options =  new FirestoreRecyclerOptions.Builder<MenuEntry>()
+        FirestoreRecyclerOptions<MenuEntry> options = new FirestoreRecyclerOptions.Builder<MenuEntry>()
                 .setQuery(listRef, MenuEntry.class)
                 .build();
 
@@ -157,7 +150,33 @@ public class MenuItemListActivity extends AppCompatActivity {
     }
 
     /**
+     * Method to create new order
+     *
+     * @param view
+     */
+    public void createNewOrder(View view) {
+        Toast.makeText(getApplicationContext(), "TODO: Go to order Screen", Toast.LENGTH_SHORT).show();
+        // TODO: go to order detail screen with new order
+
+    }
+
+    /**
+     * addNewMenuItem       method to go to add new menu item screen
+     *
+     * @param view
+     */
+    public void addNewMenuItem(View view) {
+        Intent i = new Intent(getApplicationContext(), MenuItemDetailActivity.class);
+
+        // set mode to edit
+        i.putExtra("MODE", "add");
+
+        startActivity(i);
+    }
+
+    /**
      * onSupportNavigateUp -  Return to previous activity/screen
+     *
      * @return boolean
      */
     @Override
