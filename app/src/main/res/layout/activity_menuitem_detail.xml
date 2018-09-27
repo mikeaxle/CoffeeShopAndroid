@@ -10,7 +10,7 @@
     tools:ignore="MergeRootFrame">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/MenuLoadingLayout"
+        android:id="@+id/menuLoadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
@@ -115,7 +115,7 @@
                 app:civ_border_color="#B3B3B3"
                 app:civ_border_width="1dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/stockIDDetailTextView" />
+                app:layout_constraintTop_toTopOf="@+id/menuIDDetailTextView" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/menuNameDetailInputLayout"
@@ -307,7 +307,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Switch
-                android:id="@+id/stockAvailableSwitch"
+                android:id="@+id/menuAvailableSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:thumbTint="@color/colorPrimary"
@@ -320,7 +320,7 @@
 
 
     <Button
-        android:id="@+id/addStockbutton"
+        android:id="@+id/addMenubutton"
         style="@style/LargeBlueButton"
         android:layout_height="81dp"
         android:onClick="save"
