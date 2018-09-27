@@ -9,7 +9,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +30,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.book.BookLoading;
@@ -46,7 +46,7 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import pl.aprilapps.easyphotopicker.EasyImageConfig;
 
 /**
- * An activity representing a single MenuItem detail screen. This
+ * An activity representing a single MenuEntry detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link MenuItemListActivity}.
@@ -54,12 +54,12 @@ import pl.aprilapps.easyphotopicker.EasyImageConfig;
 public class MenuItemDetailActivity extends AppCompatActivity {
 
     // TAG for device logs
-    private static final String TAG = " MenuItemDetailActivity";
+    private static final String TAG = " MenuEntryActivity";
 
     // FireBase database instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // FireBase list reference
+    // FireBase item reference
     DocumentReference itemRef;
 
     // FireBase storage instance
@@ -72,7 +72,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     StorageReference imageRef;
 
     // Menu item
-    MenuItem menuItem;
+    MenuEntry menuItem;
 
     // mode
     String mode;
@@ -101,7 +101,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menuitem_detail);
 
         // set up custom tool bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.menuAppToolbar);
+        Toolbar toolbar = findViewById(R.id.menuAppToolbar);
         setSupportActionBar(toolbar);
 
         // enable back button
@@ -114,17 +114,19 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                 .setCopyExistingPicturesToPublicLocation(true);
 
         // init views
-        title = (TextView) findViewById(R.id.menuDetailTitleTextView);
-        menuID = (TextView) findViewById(R.id.menuIDDetailTextView);
-        name = (EditText) findViewById(R.id.menuNameDetailTextView);
-        price = (EditText) findViewById(R.id.menuPriceEditText);
-        available = (Switch) findViewById(R.id.menuAvailableSwitch);
-        image = (CircleImageView) findViewById(R.id.menuDetailImageView);
-        save = (Button) findViewById(R.id.addMenubutton);
-        loadLayout = (ConstraintLayout) findViewById(R.id.menuLoadingLayout);
-        loadingBar = (BookLoading) findViewById(R.id.menuLoadingBar);
+        title = findViewById(R.id.menuDetailTitleTextView);
+        menuID = findViewById(R.id.menuIDDetailTextView);
+        name = findViewById(R.id.menuNameDetailTextView);
+        price = findViewById(R.id.menuPriceEditText);
+        available = findViewById(R.id.menuAvailableSwitch);
+        image = findViewById(R.id.menuDetailImageView);
 
-        // get extras from intent
+        save = findViewById(R.id.addMenubutton);
+
+        loadLayout = findViewById(R.id.menuLoadingLayout);
+        loadingBar = findViewById(R.id.menuLoadingBar);
+
+        // get extras from intent from the list
         Intent i = getIntent();
         mode = i.getStringExtra("MODE");
 
@@ -155,7 +157,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                     // check if document exists
                     if (documentSnapshot.exists()) {
                         // cast to item
-                        menuItem = documentSnapshot.toObject(MenuItem.class);
+                        menuItem = documentSnapshot.toObject(MenuEntry.class);
 
                         // assign views
                         title.setText("editing '" + menuItem.getName() + "'");
@@ -252,7 +254,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                         // check if document exists
                         if (documentSnapshot.exists()) {
                             // cast to item
-                            menuItem = documentSnapshot.toObject(MenuItem.class);
+                            menuItem = documentSnapshot.toObject(MenuEntry.class);
 
                             // assign view
                             menuID.setText("Menu ID: " + documentSnapshot.getId());
@@ -300,10 +302,9 @@ public class MenuItemDetailActivity extends AppCompatActivity {
         showLoadingBar();
 
         // get text from views and initialize new menu item with default stock image
-        final MenuItem newMenuItem = new MenuItem(name.getText().toString(), Double.parseDouble(price.getText().toString()),
-                Double.parseDouble(stockLevel.getText().toString()), Double.parseDouble(stockReorder.getText().toString()),
-                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/stock%2Fsp_camera.png?alt=media&token=0324360a-0b3f-412c-8a8e-f836009c5dea",
-                available.isChecked());
+        final MenuEntry newMenuEntry = new MenuEntry(name.getText().toString(),Double.parseDouble(price.getText().toString()),
+                description.getText().toString(), available.isChecked(),
+                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/menu%2Fsp_menu.png?alt=media&token=b93c0adc-511d-4bcd-b7b7-14bc087325f2");
 
         // check if image was selected or image was changed
         if (isImageChanged) {
@@ -335,10 +336,10 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                             Uri downloadUri = task.getResult();
 
                             // set new stock item image to download url
-                            newStockItem.setImage(downloadUri.toString());
+                            newMenuEntry.setImage(downloadUri.toString());
 
                             // save to FireBase
-                            saveToFireBase(newStockItem);
+                            saveToFireBase(newMenuEntry);
                         } else {
                             // show error toast
                             Toast.makeText(MenuItemDetailActivity.this, "getting image download url failed", Toast.LENGTH_SHORT).show();
@@ -365,10 +366,10 @@ public class MenuItemDetailActivity extends AppCompatActivity {
             // check if mode is edit
             if (mode.equals("edit")) {
                 // set new stock item image to old stock item image
-                newMenuItem.setImage(menuItem.getImage());
+                newMenuEntry.setImage(menuItem.getImage());
             }
             // save to FireBase
-            saveToFireBase(newMenuItem);
+            saveToFireBase(newMenuEntry);
         }
     }
 
@@ -400,14 +401,14 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     /**
      * saveToFireBase       method that adds new item to FireBase or updates an existing one based on 'mode' setting
      *
-     * @param newStockItem custom object to save to FireBase
+     * @param newMenuEntry custom object to save to FireBase
      */
-    private void saveToFireBase(StockItem newStockItem) {
+    private void saveToFireBase(MenuEntry newMenuEntry) {
         // check mode
         switch (mode) {
             // adding new item to FireBase
             case "add":
-                db.collection("menu").add(newMenuItem)
+                db.collection("menu").add(newMenuEntry)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
@@ -434,7 +435,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                 break;
             case "edit":
                 // update existing item in FireBase
-                itemRef.set(newStockItem, SetOptions.merge())
+                itemRef.set(newMenuEntry, SetOptions.merge())
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -505,7 +506,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
 
 
    /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuEntry item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button. In the case of this
@@ -514,7 +515,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, MenuItemListActivity.class));
+            navigateUpTo(new Intent(this, MenuEntryListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
