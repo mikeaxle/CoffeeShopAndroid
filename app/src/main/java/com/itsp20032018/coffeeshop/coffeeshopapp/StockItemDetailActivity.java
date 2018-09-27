@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
     // FireBase database instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // FireBase list reference
+    // FireBase item reference
     DocumentReference itemRef;
 
     // FireBase storage instance
@@ -84,7 +85,8 @@ public class StockItemDetailActivity extends AppCompatActivity {
     EditText stockLevel;
     EditText stockReorder;
     Switch available;
-    Button save;
+    Button saveButton;
+    ImageButton deleteButton;
 
     // loading views
     ConstraintLayout loadLayout;
@@ -101,7 +103,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stockitem_detail);
 
         // set up custom tool bar
-        Toolbar appToolbar = (Toolbar) findViewById(R.id.stockAppToolbar);
+        Toolbar appToolbar = findViewById(R.id.stockAppToolbar);
         setSupportActionBar(appToolbar);
 
         // enable back button
@@ -114,27 +116,36 @@ public class StockItemDetailActivity extends AppCompatActivity {
                 .setCopyExistingPicturesToPublicLocation(true);
 
         // init views
-        title = (TextView) findViewById(R.id.stockDetailTitleTextView);
-        stockID = (TextView) findViewById(R.id.stockIDDetailTextView);
-        name = (EditText) findViewById(R.id.stockNameDetailTextView);
-        price = (EditText) findViewById(R.id.stockPriceEditText);
-        stockLevel = (EditText) findViewById(R.id.stockLevelEditText);
-        stockReorder = (EditText) findViewById(R.id.stockReorderTextEdit);
-        available = (Switch) findViewById(R.id.stockAvailableSwitch);
-        image = (CircleImageView) findViewById(R.id.stockDetailImageView);
-        save = (Button) findViewById(R.id.addStockbutton);
-        loadLayout = (ConstraintLayout) findViewById(R.id.stockLoadingLayout);
-        loadingBar = (BookLoading) findViewById(R.id.stockLoadingBar);
+        title = findViewById(R.id.stockDetailTitleTextView);
+        stockID = findViewById(R.id.stockIDDetailTextView);
+        name = findViewById(R.id.stockNameDetailTextView);
+        price = findViewById(R.id.stockPriceEditText);
+        stockLevel = findViewById(R.id.stockLevelEditText);
+        stockReorder = findViewById(R.id.stockReorderTextEdit);
+        available = findViewById(R.id.stockAvailableSwitch);
+        image = findViewById(R.id.stockDetailImageView);
+        saveButton = findViewById(R.id.addStockbutton);
+        loadLayout = findViewById(R.id.stockLoadingLayout);
+        loadingBar = findViewById(R.id.stockLoadingBar);
+        deleteButton = findViewById(R.id.stockDeleteButton);
+
+        // set listeners
+        setClickListeners();
 
 
         // get extras from intent
         Intent i = getIntent();
         mode = i.getStringExtra("MODE");
 
+        // check mode
         if (mode.equals("edit")) {
+            // get path from intent extras
             String path = i.getStringExtra("PATH");
+
+            // call method to load existing details into view
             loadEdit(path);
         } else {
+            // set title if on add mode
             title.setText("adding new stock item");
         }
     }
@@ -231,21 +242,44 @@ public class StockItemDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * selectImage      method to bring up image picker. allows user to pick image from gallery or take new picture
-     *
-     * @param view
+     * setClickListeners        set click listeners for buttons on this activity
      */
-    void selectImage(View view) {
+    private void setClickListeners() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteItem();
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+    }
+
+    /**
+     * selectImage      method to bring up image picker. allows user to pick image from gallery or take new picture
+     */
+    protected void selectImage() {
         // open image picker
         EasyImage.openChooserWithGallery(StockItemDetailActivity.this, "Select an image", EasyImageConfig.REQ_PICK_PICTURE_FROM_GALLERY);
     }
 
     /**
      * loadEdit     method to load existing data into views
-     *
      * @param path this is the FireStore path for the document to fetch
      */
-    void loadEdit(String path) {
+    protected void loadEdit(String path) {
         // get FireStore document
         itemRef = db.document(path);
         itemRef.get()
@@ -293,11 +327,10 @@ public class StockItemDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * save     method to save changes to FireBase
+     * saveButton     method to saveButton changes to FireBase
      *
-     * @param view
      */
-    void save(View view) {
+    protected void save() {
         // TODO: validations
 
         // show loading bar
@@ -341,7 +374,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
                             // set new stock item image to download url
                             newStockItem.setImage(downloadUri.toString());
 
-                            // save to FireBase
+                            // saveButton to FireBase
                             saveToFireBase(newStockItem);
                         } else {
                             // show error toast
@@ -371,7 +404,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
                 // set new stock item image to old stock item image
                 newStockItem.setImage(stockItem.getImage());
             }
-            // save to FireBase
+            // saveButton to FireBase
             saveToFireBase(newStockItem);
         }
     }
@@ -387,8 +420,8 @@ public class StockItemDetailActivity extends AppCompatActivity {
             // start loading animation
             loadingBar.start();
 
-            // disable save button to prevent user from trying to save more than once
-            save.setEnabled(false);
+            // disable saveButton button to prevent user from trying to saveButton more than once
+            saveButton.setEnabled(false);
         } else {
             // hide fullscreen white background
             loadLayout.setVisibility(View.GONE);
@@ -396,15 +429,15 @@ public class StockItemDetailActivity extends AppCompatActivity {
             // stop loading animation
             loadingBar.stop();
 
-            // enable save button to prevent user from trying to save more than once
-            save.setEnabled(true);
+            // enable saveButton button to prevent user from trying to saveButton more than once
+            saveButton.setEnabled(true);
         }
     }
 
     /**
      * saveToFireBase       method that adds new item to FireBase or updates an existing one based on 'mode' setting
      *
-     * @param newStockItem custom object to save to FireBase
+     * @param newStockItem custom object to saveButton to FireBase
      */
     private void saveToFireBase(StockItem newStockItem) {
         // check mode
@@ -470,7 +503,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
     /**
      * deleteItem       method to delete item from FireStore
      */
-    void deleteItem(View view) {
+    protected void deleteItem() {
         // TODO: add dialog to confirm/decline delete
         // check is in edit mode
         if (mode.equals("edit")) {
