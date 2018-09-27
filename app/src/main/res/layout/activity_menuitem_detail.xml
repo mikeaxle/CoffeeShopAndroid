@@ -74,7 +74,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
-            android:onClick="deleteItem"
+            android:onClick="onClick"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
                 android:layout_height="64dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
-                android:onClick="selectImage"
+                android:onClick="onClick"
                 android:src="@drawable/sp_camera"
                 app:civ_border_color="#B3B3B3"
                 app:civ_border_width="1dp"
@@ -175,19 +175,19 @@
             android:padding="10dp">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/menuPriceInputLayout"
+                android:id="@+id/menuDescriptionInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/menuLevelInputLayout"
+                app:layout_constraintBottom_toTopOf="@+id/menuPriceInputLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
 
                 <EditText
-                    android:id="@+id/menuPriceEditText"
+                    android:id="@+id/menuDescriptionEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -205,24 +205,24 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/menuPriceInputLayout"
-                app:layout_constraintBottom_toTopOf="@+id/menuLevelInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/menuDescriptionInputLayout"
+                app:layout_constraintBottom_toTopOf="@+id/menuPriceInputLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/menuLevelInputLayout"
+                android:id="@+id/menuPriceInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/menuPriceInputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/menuDescriptionInputLayout">
 
                 <EditText
-                    android:id="@+id/menuLevelEditText"
+                    android:id="@+id/menuPriceEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -241,7 +241,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/menuLevelInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/menuPriceInputLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -297,7 +297,7 @@
         android:id="@+id/addMenubutton"
         style="@style/LargeBlueButton"
         android:layout_height="81dp"
-        android:onClick="save"
+        android:onClick="onClick"
         android:text="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +86,8 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     EditText description;
     Switch available;
     Button save;
+   // Button saveButton;
+    ImageButton deleteButton;
 
     // loading views
     ConstraintLayout loadLayout;
@@ -118,13 +121,19 @@ public class MenuItemDetailActivity extends AppCompatActivity {
         menuID = findViewById(R.id.menuIDDetailTextView);
         name = findViewById(R.id.menuNameDetailTextView);
         price = findViewById(R.id.menuPriceEditText);
+        description = findViewById(R.id.menuDescriptionEdit);
         available = findViewById(R.id.menuAvailableSwitch);
         image = findViewById(R.id.menuDetailImageView);
 
         save = findViewById(R.id.addMenubutton);
+        deleteButton = findViewById(R.id.menuDeleteButton);
 
         loadLayout = findViewById(R.id.menuLoadingLayout);
         loadingBar = findViewById(R.id.menuLoadingBar);
+
+
+        // set listeners
+        setClickListeners();
 
         // get extras from intent from the list
         Intent i = getIntent();
@@ -164,7 +173,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                         menuID.setText("Stock ID: " + documentSnapshot.getId());
                         name.setText(menuItem.getName());
                         price.setText(String.valueOf(menuItem.getPrice()));
-                        description.setText(String.valueOf(menuItem.getDescription()));
+                        description.setText(menuItem.getDescription());
                         available.setChecked(menuItem.isAvailable());
 
                         // TODO: fix bug where image changed does not load into imageview because of real time sync
@@ -230,11 +239,39 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     }
 
     /**
+     * setClickListeners        set click listeners for buttons on this activity
+     */
+    private void setClickListeners() {
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteItem();
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+    }
+
+
+
+    /**
      * selectImage      method to bring up image picker. allows user to pick image from gallery or take new picture
      *
-     * @param view
+     * @param
      */
-    void selectImage(View view) {
+    void selectImage() {
         // open image picker
         EasyImage.openChooserWithGallery(MenuItemDetailActivity.this, "Select an image", EasyImageConfig.REQ_PICK_PICTURE_FROM_GALLERY);
     }
@@ -293,9 +330,9 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     /**
      * save     method to save changes to FireBase
      *
-     * @param view
+     * @param
      */
-    void save(View view) {
+    void save() {
         // TODO: validations
 
         // show loading bar
@@ -467,7 +504,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     /**
      * deleteItem       method to delete item from FireStore
      */
-    void deleteItem(View view) {
+    void deleteItem() {
         // TODO: add dialog to confirm/decline delete
         // check is in edit mode
         if (mode.equals("edit")) {
