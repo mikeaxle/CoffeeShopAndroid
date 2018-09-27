@@ -53,6 +53,9 @@ dependencies {
 
     // floating label spinner
     implementation 'com.github.riadhnet:MaterialSpinner:1.2.1'
+
+    // material dialog
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

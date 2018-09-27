@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,6 +44,9 @@ public class MenuItemListActivity extends AppCompatActivity {
     // add menu button
     Button addMenuButton;
 
+    // material design dialog
+    MaterialDialog.Builder dialog;
+
     // custom adapter
     private ItemAdapter adapter;
 
@@ -52,7 +56,7 @@ public class MenuItemListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menuitem_list);
 
         // set up custom tool bar
-        Toolbar appToolbar = (Toolbar) findViewById(R.id.menuAppToolbar);
+        Toolbar appToolbar = findViewById(R.id.menuAppToolbar);
         setSupportActionBar(appToolbar);
 
         // enable back button
@@ -60,7 +64,7 @@ public class MenuItemListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // set up button & click listener
-        addMenuButton = (Button) findViewById(R.id.addOrderButton);
+        addMenuButton = findViewById(R.id.addOrderButton);
 //        addMenuButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -70,6 +74,12 @@ public class MenuItemListActivity extends AppCompatActivity {
 
         // load list
         loadList();
+
+        // init dialog
+        dialog = new MaterialDialog.Builder(this)
+                .title("Adding to order...")
+                .positiveText("Add to order")
+                .negativeText("Edit item");
 
     }
 
@@ -105,7 +115,7 @@ public class MenuItemListActivity extends AppCompatActivity {
         adapter = new ItemAdapter(options, "menu");
 
         // get recycler view
-        menuRecyclerView = (RecyclerView) findViewById(R.id.menuRecyclerView);
+        menuRecyclerView = findViewById(R.id.menuRecyclerView);
 
         // create new layout manager - can be set to gridLayout or linerLayout manager
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -122,6 +132,9 @@ public class MenuItemListActivity extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 // TODO: add to order in memory
                 Toast.makeText(MenuItemListActivity.this, "TODO: add to order in memory", Toast.LENGTH_SHORT).show();
+
+                // show dialog
+                dialog.show();
 
             }
         });

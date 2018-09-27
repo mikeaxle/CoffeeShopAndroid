@@ -34,7 +34,7 @@
                 android:layout_marginTop="8dp"
                 android:clickable="true"
 
-                android:onClick="selectImage"
+                android:onClick="onClick"
                 android:src="@drawable/sp_camera"
                 app:civ_border_color="#B3B3B3"
                 app:civ_border_width="1dp"
