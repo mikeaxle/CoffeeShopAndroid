@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +89,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
     EditText address;
     EditText phoneNumber;
     EditText emailAddress;
-    Button save;
+    Button saveButton;
+    ImageButton deleteButton;
+
 
     // loading views
     ConstraintLayout loadLayout;
@@ -105,7 +108,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_staffmember_detail);
 
         // set up custom tool bar
-        Toolbar appToolbar = (Toolbar) findViewById(R.id.staffAppToolbar);
+        Toolbar appToolbar = findViewById(R.id.staffAppToolbar);
         setSupportActionBar(appToolbar);
 
         // enable back button
@@ -122,19 +125,22 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         mode = i.getStringExtra("MODE");
 
         // init views
-        title = (TextView) findViewById(R.id.staffDetailTitleTextView);
-        staffID = (TextView) findViewById(R.id.staffIDDetailTextView);
-        firstName = (EditText) findViewById(R.id.staffNameDetailEditText);
-        lastName = (EditText) findViewById(R.id.staffSurnameDetailEditText);
-        address = (EditText) findViewById(R.id.staffAddressTextEdit);
-        phoneNumber = (EditText) findViewById(R.id.staffPhoneEditText);
-        emailAddress = (EditText) findViewById(R.id.staffEmailEditText);
+        title = findViewById(R.id.staffDetailTitleTextView);
+        staffID = findViewById(R.id.staffIDDetailTextView);
+        firstName = findViewById(R.id.staffNameDetailEditText);
+        lastName = findViewById(R.id.staffSurnameDetailEditText);
+        address = findViewById(R.id.staffAddressTextEdit);
+        phoneNumber = findViewById(R.id.staffPhoneEditText);
+        emailAddress = findViewById(R.id.staffEmailEditText);
+        image = findViewById(R.id.staffDetailImageView);
+        saveButton = findViewById(R.id.addStaffDetailbutton);
+        deleteButton = findViewById(R.id.staffDeleteButton);
 
+        loadLayout = findViewById(R.id.staffLoadingLayout);
+        loadingBar = findViewById(R.id.staffLoadingBar);
 
-        image = (CircleImageView) findViewById(R.id.staffDetailImageView);
-        save = (Button) findViewById(R.id.addStaffDetailbutton);
-        loadLayout = (ConstraintLayout) findViewById(R.id.staffLoadingLayout);
-        loadingBar = (BookLoading) findViewById(R.id.staffLoadingBar);
+        // set listeners
+        setClickListeners();
 
         if (mode.equals("edit")) {
             String path = i.getStringExtra("PATH");
@@ -144,12 +150,12 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         }
 
         // set up spinners
-        role = (MaterialSpinner) findViewById(R.id.staffJobRoleSpinner);
+        role = findViewById(R.id.staffJobRoleSpinner);
         ArrayAdapter<String> roleSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.job_role_array));
         roleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         role.setAdapter(roleSpinnerAdapter);
 
-        gender = (MaterialSpinner) findViewById(R.id.staffGenderSpinner);
+        gender = findViewById(R.id.staffGenderSpinner);
         ArrayAdapter<String> genderSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.gender_array));
         genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(genderSpinnerAdapter);
@@ -249,19 +255,39 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void setClickListeners() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteItem();
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+    }
+
     /**
      * selectImage      method to bring up image picker. allows user to pick image from gallery or take new picture
-     *
-     * @param view
      */
-    void selectImage(View view) {
+    void selectImage() {
         // open image picker
         EasyImage.openChooserWithGallery(StaffMemberDetailActivity.this, "Select an image", EasyImageConfig.REQ_PICK_PICTURE_FROM_GALLERY);
     }
 
     /**
      * loadEdit     method to load existing data into views
-     *
      * @param path this is the FireStore path for the document to fetch
      */
     void loadEdit(String path) {
@@ -336,11 +362,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * save     method to save changes to FireBase
-     *
-     * @param view
+     * saveButton     method to saveButton changes to FireBase
      */
-    void save(View view) {
+    void save() {
         // TODO: validations
 
         // show loading bar
@@ -384,7 +408,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                             // set new staff member image to download url
                             newStaffMember.setImage(downloadUri.toString());
 
-                            // save to FireBase
+                            // saveButton to FireBase
                             saveToFireBase(newStaffMember);
                         } else {
                             // show error toast
@@ -414,7 +438,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                 // set new staff memberimage to old staff member image
                 newStaffMember.setImage(staffMember.getImage());
             }
-            // save to FireBase
+            // saveButton to FireBase
             saveToFireBase(newStaffMember);
         }
     }
@@ -430,8 +454,8 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
             // start loading animation
             loadingBar.start();
 
-            // disable save button to prevent user from trying to save more than once
-            save.setEnabled(false);
+            // disable saveButton button to prevent user from trying to saveButton more than once
+            saveButton.setEnabled(false);
         } else {
             // hide fullscreen white background
             loadLayout.setVisibility(View.GONE);
@@ -439,15 +463,15 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
             // stop loading animation
             loadingBar.stop();
 
-            // enable save button to prevent user from trying to save more than once
-            save.setEnabled(true);
+            // enable saveButton button to prevent user from trying to saveButton more than once
+            saveButton.setEnabled(true);
         }
     }
 
     /**
      * saveToFireBase       method that adds new item to FireBase or updates an existing one based on 'mode' setting
      *
-     * @param newStaffMember custom object to save to FireBase
+     * @param newStaffMember custom object to saveButton to FireBase
      */
     private void saveToFireBase(StaffMember newStaffMember) {
         // check mode
@@ -513,7 +537,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
     /**
      * deleteItem       method to delete item from FireStore
      */
-    void deleteItem(View view) {
+    void deleteItem() {
         // TODO: add dialog to confirm/decline delete
         // check is in edit mode
         if (mode.equals("edit")) {
