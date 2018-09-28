@@ -15,7 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="23dp"
         android:src="@drawable/ic_sp_camera"
-        app:civ_border_color="#B3B3B3"
+        app:civ_border_color="@color/colorTertiary"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="@+id/stockNameTextView"
         app:layout_constraintStart_toStartOf="@+id/stockNameTextView"

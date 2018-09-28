@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -17,6 +20,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
+import com.itsp20032018.coffeeshop.coffeeshopapp.transforms.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -47,8 +52,15 @@ public class MenuItemListActivity extends AppCompatActivity {
     // material design dialog
     MaterialDialog.Builder dialog;
 
+    // layout inflater for dialog
+    LayoutInflater inflater;
+
+    // View for custom dialog
+    View dialogView;
+
     // custom adapter
     private ItemAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +75,16 @@ public class MenuItemListActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        // init inflater
+        inflater = LayoutInflater.from(this);
+
+        // init custom dialog
+        dialogView = inflater.inflate(R.layout.add_to_order_dialog, null);
+
+
+
         // set up button & click listener
-        addMenuButton = findViewById(R.id.addOrderButton);
+//        addMenuButton = findViewById(R.id.addOrderButton);
 //        addMenuButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -77,9 +97,7 @@ public class MenuItemListActivity extends AppCompatActivity {
 
         // init dialog
         dialog = new MaterialDialog.Builder(this)
-                .title("Adding to order...")
-                .positiveText("Add to order")
-                .negativeText("Edit item");
+                .customView(dialogView, false);
 
     }
 
@@ -130,12 +148,27 @@ public class MenuItemListActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                // TODO: add to order in memory
-                Toast.makeText(MenuItemListActivity.this, "TODO: add to order in memory", Toast.LENGTH_SHORT).show();
+
+                // object to store document
+                MenuEntry menuItem = documentSnapshot.toObject(MenuEntry.class);
+
+                // create views for dialog
+                TextView dialogName = dialogView.findViewById(R.id.menuDialogNameTextView);
+                TextView dialogPrice = dialogView.findViewById(R.id.menuDialogPriceTextView);
+                ImageView dialogImage = dialogView.findViewById(R.id.menuDialogImageView);
+
+                // set up views
+                dialogName.setText(menuItem.getName());
+                dialogPrice.setText("R" + menuItem.getPrice());
+                Picasso.get().load(menuItem.getImage())
+                        .centerCrop()
+                        .transform(new CircleTransform(15,0))
+                        .fit()
+                        .placeholder(R.color.colorSecondary)
+                        .into(dialogImage);
 
                 // show dialog
                 dialog.show();
-
             }
         });
         // set long click listener

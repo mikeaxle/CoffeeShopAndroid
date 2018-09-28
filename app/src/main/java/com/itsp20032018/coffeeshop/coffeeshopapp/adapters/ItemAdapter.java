@@ -174,7 +174,9 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
 
                 // download image using image url and set to stock image
                 if (!stockItem.getImage().equals(""))
-                    Picasso.get().load(stockItem.getImage()).into(((StockHolder) holder).stockItemImage);
+                    Picasso.get().load(stockItem.getImage())
+                            .placeholder(R.drawable.circle_picasso_placeholder)
+                            .into(((StockHolder) holder).stockItemImage);
 
                 // set stock item name
                 ((StockHolder) holder).stockName.setText(stockItem.getName());
@@ -188,7 +190,9 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
 
                 // download image using image url and set to stock image
                 if (!staffMember.getImage().equals(""))
-                    Picasso.get().load(staffMember.getImage()).into(((StaffHolder) holder).staffMemberImage);
+                    Picasso.get().load(staffMember.getImage())
+                            .placeholder(R.drawable.circle_picasso_placeholder)
+                            .into(((StaffHolder) holder).staffMemberImage);
 
                 // set staff member name
                 ((StaffHolder) holder).staffName.setText(staffMember.getFirstName() + " " + staffMember.getLastName());
@@ -202,7 +206,9 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
 
                 // download image using image url and set to menu item image
                 if (!menuItem.getImage().equals(""))
-                    Picasso.get().load(menuItem.getImage()).into(((MenuHolder) holder).menuItemImage);
+                    Picasso.get().load(menuItem.getImage())
+                            .placeholder(R.drawable.circle_picasso_placeholder)
+                            .into(((MenuHolder) holder).menuItemImage);
 
                 // set menu item name
                 ((MenuHolder) holder).menuItemName.setText(menuItem.getName());

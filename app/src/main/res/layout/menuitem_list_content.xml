@@ -14,7 +14,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:src="@drawable/ic_sp_camera"
-        app:civ_border_color="#B3B3B3"
+        app:civ_border_color="@color/colorTertiary"
         app:civ_border_width="1dp"
         app:layout_constraintBottom_toTopOf="@+id/menuNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
