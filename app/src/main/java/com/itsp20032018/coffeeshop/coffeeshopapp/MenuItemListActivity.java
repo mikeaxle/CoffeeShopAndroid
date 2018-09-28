@@ -2,27 +2,37 @@ package com.itsp20032018.coffeeshop.coffeeshopapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Order;
 import com.itsp20032018.coffeeshop.coffeeshopapp.transforms.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -50,7 +60,7 @@ public class MenuItemListActivity extends AppCompatActivity {
     Button addMenuButton;
 
     // material design dialog
-    MaterialDialog.Builder dialog;
+    MaterialDialog dialog;
 
     // layout inflater for dialog
     LayoutInflater inflater;
@@ -60,6 +70,22 @@ public class MenuItemListActivity extends AppCompatActivity {
 
     // custom adapter
     private ItemAdapter adapter;
+
+    //  views for dialog
+    TextView dialogName;
+    TextView dialogPrice;
+    ImageView dialogImage;
+    TextView dialogQuantity;
+    SeekBar dialogSeek;
+    Button dialogAddToOrder;
+    Button dialogEditMenu;
+    ImageButton dialogClose;
+
+    // dialog quantity variables
+    int min, max, current;
+
+    // object to current store object
+    public Order currentOrder;
 
 
     @Override
@@ -81,23 +107,16 @@ public class MenuItemListActivity extends AppCompatActivity {
         // init custom dialog
         dialogView = inflater.inflate(R.layout.add_to_order_dialog, null);
 
-
-
-        // set up button & click listener
-//        addMenuButton = findViewById(R.id.addOrderButton);
-//        addMenuButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                createNewOrder();
-//            }
-//        });
-
         // load list
         loadList();
 
         // init dialog
         dialog = new MaterialDialog.Builder(this)
-                .customView(dialogView, false);
+                .customView(dialogView, false)
+                .build();
+
+        // init order
+        currentOrder = new Order();
 
     }
 
@@ -149,23 +168,108 @@ public class MenuItemListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
 
+                // get reference to object and store in string
+                final String path = documentSnapshot.getReference().getPath();
+
                 // object to store document
-                MenuEntry menuItem = documentSnapshot.toObject(MenuEntry.class);
+                final MenuEntry menuItem = documentSnapshot.toObject(MenuEntry.class);
 
                 // create views for dialog
-                TextView dialogName = dialogView.findViewById(R.id.menuDialogNameTextView);
-                TextView dialogPrice = dialogView.findViewById(R.id.menuDialogPriceTextView);
-                ImageView dialogImage = dialogView.findViewById(R.id.menuDialogImageView);
+                dialogName = dialogView.findViewById(R.id.menuDialogNameTextView);
+                dialogPrice = dialogView.findViewById(R.id.menuDialogPriceTextView);
+                dialogImage = dialogView.findViewById(R.id.menuDialogImageView);
+                dialogQuantity = dialogView.findViewById(R.id.menuDialogQuantityTextView);
+                dialogSeek = dialogView.findViewById(R.id.menuDialogSeekBar);
+                dialogAddToOrder = dialogView.findViewById(R.id.menuDialogAddOrderbutton);
+                dialogEditMenu = dialogView.findViewById(R.id.menuDialogEditOrderbutton);
+                dialogClose = dialogView.findViewById(R.id.menuDialogCloseImageButton);
 
-                // set up views
+                /**
+                 *  set up views
+                 */
+                // add button click listeners
+                dialogAddToOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // set menu item quantity
+                        menuItem.setQuantity(current);
+
+                        // add to order array list
+                        currentOrder.orderItems.add(menuItem);
+
+                        // show tost to user
+                        Toast.makeText(MenuItemListActivity.this, "(x" + menuItem.getQuantity() + ")" + menuItem.getName() + " added to order", Toast.LENGTH_SHORT).show();
+
+                        // close dialog
+                        dialog.dismiss();
+                    }
+                });
+                dialogEditMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // go to edit screen
+                        // create intent
+                        Intent i = new Intent(getApplicationContext(), MenuItemDetailActivity.class);
+
+                        // add extras
+                        i.putExtra("PATH", path);
+
+                        // set mode to edit
+                        i.putExtra("MODE", "edit");
+
+                        // start activity
+                        startActivity(i);
+
+                        // destroy modal
+                        dialog.dismiss();
+
+                    }
+                });
+                dialogClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // close dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                // assign up text views
                 dialogName.setText(menuItem.getName());
                 dialogPrice.setText("R" + menuItem.getPrice());
                 Picasso.get().load(menuItem.getImage())
                         .centerCrop()
-                        .transform(new CircleTransform(15,0))
+                        .transform(new CircleTransform(15, 0))
                         .fit()
-                        .placeholder(R.color.colorSecondary)
+                        .placeholder(R.drawable.rounded_corner_placeholder)
                         .into(dialogImage);
+
+                // set up seek bar + quantity text view
+                min = 1;
+                max = 10;
+                current = 1;
+                dialogSeek.setMax(max - min);
+                dialogSeek.setProgress(current - min);
+                dialogQuantity.setText("Quantity: " + current);
+
+                // add seek bar listeners
+                dialogSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                        current = progress + min;
+                        dialogQuantity.setText("Quantity: " + current);
+
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
 
                 // show dialog
                 dialog.show();
@@ -201,14 +305,39 @@ public class MenuItemListActivity extends AppCompatActivity {
      * @param view
      */
     public void createNewOrder(View view) {
-        Toast.makeText(getApplicationContext(), "TODO: Go to order Screen", Toast.LENGTH_SHORT).show();
-        // TODO: go to order detail screen with new order
+        // add time stamp
+        currentOrder.setTimestamp(new Date());
 
+        Toast.makeText(this, "order created", Toast.LENGTH_SHORT).show();
+
+        //add order to FireBase
+        db.collection("orders")
+                .add(currentOrder)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        // check if successful
+                        if(task.isSuccessful()) {
+                            // go to order list
+                            Intent i = new Intent(getApplicationContext(), OrderListActivity.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Toast.makeText(MenuItemListActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MenuItemListActivity.this, "something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.getMessage() );
+                    }
+                });
     }
 
     /**
      * addNewMenuItem       method to go to add new menu item screen
-     *
      * @param view
      */
     public void addNewMenuItem(View view) {

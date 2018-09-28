@@ -23,11 +23,11 @@
         android:layout_width="260dp"
         android:layout_height="140dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner_placeholder"
         app:layout_constraintBottom_toTopOf="@+id/menuDialogPriceTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuDialogNameTextView"
-        app:srcCompat="@android:drawable/btn_star" />
+        app:layout_constraintTop_toBottomOf="@+id/menuDialogNameTextView" />
 
     <TextView
         android:id="@+id/menuDialogPriceTextView"
@@ -96,4 +96,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuDialogSeekBar" />
+
+    <ImageButton
+        android:id="@+id/menuDialogCloseImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close_black" />
+
 </android.support.constraint.ConstraintLayout>
