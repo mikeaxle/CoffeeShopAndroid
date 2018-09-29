@@ -107,9 +107,6 @@ public class MenuItemListActivity extends AppCompatActivity {
         // init custom dialog
         dialogView = inflater.inflate(R.layout.add_to_order_dialog, null);
 
-        // load list
-        loadList();
-
         // init dialog
         dialog = new MaterialDialog.Builder(this)
                 .customView(dialogView, false)
@@ -117,6 +114,9 @@ public class MenuItemListActivity extends AppCompatActivity {
 
         // init order
         currentOrder = new Order();
+
+        // load list from FireBase
+        loadList();
 
     }
 
@@ -197,7 +197,7 @@ public class MenuItemListActivity extends AppCompatActivity {
                         // add to order array list
                         currentOrder.orderItems.add(menuItem);
 
-                        // show tost to user
+                        // show toast to user
                         Toast.makeText(MenuItemListActivity.this, "(x" + menuItem.getQuantity() + ")" + menuItem.getName() + " added to order", Toast.LENGTH_SHORT).show();
 
                         // close dialog
@@ -233,7 +233,7 @@ public class MenuItemListActivity extends AppCompatActivity {
                     }
                 });
 
-                // assign up text views
+                // assign  text views
                 dialogName.setText(menuItem.getName());
                 dialogPrice.setText("R" + menuItem.getPrice());
                 Picasso.get().load(menuItem.getImage())

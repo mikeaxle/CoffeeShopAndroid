@@ -19,4 +19,10 @@
         <item>Chef</item>
         <item>Manager</item>
     </string-array>
+    <string-array name="order_status_role_array">
+        <item>Preparing</item>
+        <item>Ready</item>
+        <item>Served</item>
+        <item>Cancelled</item>
+    </string-array>
 </resources>
