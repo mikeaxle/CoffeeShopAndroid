@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -186,6 +187,20 @@ public class OrderListActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             // close dialog
                             dialog.dismiss();
+                        }
+                    });
+
+                    dialogOrderStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            Toast.makeText(OrderListActivity.this, "i: " + 1 + " long: " + l, Toast.LENGTH_SHORT).show();
+                            // TODO: disable pay button if order is set to cancelled, show toast and save to FireBase without dismissing dialog
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
                         }
                     });
 
