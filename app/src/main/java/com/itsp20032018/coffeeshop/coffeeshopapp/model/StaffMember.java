@@ -29,7 +29,7 @@ public class StaffMember {
     private String image;
 
     // no args constructor, needed to use with FireStore
-    StaffMember(){}
+    public StaffMember(){}
 
     /**
      * Constructor

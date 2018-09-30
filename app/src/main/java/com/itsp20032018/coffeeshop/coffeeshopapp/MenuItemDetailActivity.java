@@ -32,7 +32,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
-import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.book.BookLoading;
 
@@ -170,7 +169,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
 
                         // assign views
                         title.setText("editing '" + menuItem.getName() + "'");
-                        menuID.setText("Stock ID: " + documentSnapshot.getId());
+                        menuID.setText("Menu ID: " + documentSnapshot.getId());
                         name.setText(menuItem.getName());
                         price.setText(String.valueOf(menuItem.getPrice()));
                         description.setText(menuItem.getDescription());
@@ -297,7 +296,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
                             menuID.setText("Menu ID: " + documentSnapshot.getId());
                             name.setText(menuItem.getName());
                             price.setText(String.valueOf(menuItem.getPrice()));
-                            description.setText(String.valueOf(menuItem.getDescription()));
+                            description.setText(menuItem.getDescription());
                             available.setChecked(menuItem.isAvailable());
 
                             if (!menuItem.getImage().equals(""))

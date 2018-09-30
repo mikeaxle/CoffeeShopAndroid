@@ -13,6 +13,7 @@ public class MenuEntry {
     private ArrayList<String> inventoryItems;
     private boolean available;
     private String image;
+    private int quantity;
 
     // no args constructor, needed to use with FireStore
     public MenuEntry() {
@@ -82,6 +83,14 @@ public class MenuEntry {
 
     public void setInventoryItems(ArrayList<String> inventoryItems) {
         this.inventoryItems = inventoryItems;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public boolean isAvailable() {
