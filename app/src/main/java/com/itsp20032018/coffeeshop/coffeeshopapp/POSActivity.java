@@ -63,6 +63,12 @@ public class POSActivity extends AppCompatActivity {
     // FireStore document path
     String path;
 
+    // TODO: replace with encapsulated order id string
+    String orderId;
+
+    // mode text
+    String mode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +98,9 @@ public class POSActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * loadOrderDropDown        loads drop down of order IDs into spinner
+     */
     private void loadOrderDropDown(){
         db.collection("orders")
                 .get()
@@ -149,7 +158,6 @@ public class POSActivity extends AppCompatActivity {
         posInstructions = findViewById(R.id.posInstructionsTextView);
 
 
-
         // get FireStore document
         itemRef = db.document(path);
         itemRef.get()
@@ -163,6 +171,9 @@ public class POSActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             // cast to item
                             order = documentSnapshot.toObject(Order.class);
+
+                            // temp. remove on TODO
+                            orderId = documentSnapshot.getId();
 
                             // hide spinner
                             posNoOrderLayout.setVisibility(View.GONE);
@@ -206,7 +217,7 @@ public class POSActivity extends AppCompatActivity {
                             // show does not exists toast
                             Toast.makeText(getApplicationContext(), "Item does not exists", Toast.LENGTH_SHORT).show();
 
-                            // redirect back to list
+                            // destroy activity
                             finish();
 
                         }
@@ -248,6 +259,8 @@ public class POSActivity extends AppCompatActivity {
 
             // change button text
             processPaymentButton.setText("next");
+
+            mode = "cash";
         } else if (mode.equals("card")) {
             // toggle active button
             cardButton.setBackgroundResource(R.drawable.rounded_corner_button_filled);
@@ -263,6 +276,8 @@ public class POSActivity extends AppCompatActivity {
 
             // change button text
             processPaymentButton.setText("process payment");
+
+            mode = "card";
         }
     }
 
@@ -276,8 +291,22 @@ public class POSActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Intent i = new Intent(getApplicationContext(), PaymentSuccess.class);
+
+                        // put order details into intent
+                        i.putExtra("ORDER_TOTAL", order.getTotal());
+                        i.putExtra("ORDER_DETAILS", order.getOrderItemsString());
+                        i.putExtra("ORDER_ID", orderId);
+
+                        // TODO add in payment processor
+                        if(mode.equals("cash")){
+                            Toast.makeText(POSActivity.this, "Paid by cash", Toast.LENGTH_SHORT).show();
+                        } else if(mode.equals("card")){
+                            Toast.makeText(POSActivity.this, "Paid by card", Toast.LENGTH_SHORT).show();
+                        }
+
                         // go to payment success page
-                        startActivity(new Intent(getApplicationContext(), PaymentSuccess.class));
+                        startActivity(i);
                         finish();
                     }
                 })
