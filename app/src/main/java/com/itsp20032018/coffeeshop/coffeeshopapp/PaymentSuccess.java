@@ -31,7 +31,7 @@ public class PaymentSuccess extends AppCompatActivity {
     String orderId;
 
     // mode text
-    String mode;
+    String mode = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

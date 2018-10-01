@@ -67,7 +67,7 @@ public class POSActivity extends AppCompatActivity {
     String orderId;
 
     // mode text
-    String mode;
+    String mode = "card";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
