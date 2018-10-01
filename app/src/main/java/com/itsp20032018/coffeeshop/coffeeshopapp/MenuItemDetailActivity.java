@@ -54,7 +54,7 @@ import pl.aprilapps.easyphotopicker.EasyImageConfig;
 public class MenuItemDetailActivity extends AppCompatActivity {
 
     // TAG for device logs
-    private static final String TAG = " MenuEntryActivity";
+    private static final String TAG = "MenuEntryActivity";
 
     // FireBase database instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();

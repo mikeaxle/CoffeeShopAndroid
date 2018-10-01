@@ -47,13 +47,14 @@ tools:context=".POSActivity">
         android:orientation="vertical"
         android:padding="20dp"
         android:verticalSpacing="20dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/posProcessPaymentButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posAppToolbar">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/posTotalTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway"
@@ -64,18 +65,18 @@ tools:context=".POSActivity">
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/orderIconImageView"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/circle_picasso_placeholder"
             android:scaleType="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/posTotalTextView"
             app:srcCompat="@drawable/ic_assignment_black_24dp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/posOrderNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -83,11 +84,11 @@ tools:context=".POSActivity">
             android:fontFamily="@font/raleway"
             android:text="Order #"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintStart_toEndOf="@+id/orderIconImageView"
+            app:layout_constraintTop_toBottomOf="@+id/posTotalTextView" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/posStatusDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -95,27 +96,68 @@ tools:context=".POSActivity">
             android:fontFamily="@font/raleway"
             android:text="Status + Date"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintStart_toEndOf="@+id/orderIconImageView"
+            app:layout_constraintTop_toBottomOf="@+id/posOrderNumberTextView" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/posCardButton"
             style="@style/mediumFilledBlueButton"
             android:layout_marginTop="32dp"
             android:text="card"
             android:textAllCaps="true"
-            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/orderIconImageView" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/posCashButton"
             style="@style/mediumLightBlueButton"
             android:layout_marginTop="32dp"
             android:text="CASH"
-            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/orderIconImageView" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/posViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_corner_placeholder"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posCardButton">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_warning_black_24dp" />
+
+            <TextView
+                android:id="@+id/posInstructionsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        </android.support.constraint.ConstraintLayout>
+
     </android.support.constraint.ConstraintLayout>
 
     <Button
@@ -123,9 +165,59 @@ tools:context=".POSActivity">
         style="@style/LargeBlueButton"
         android:layout_height="81dp"
         android:enabled="true"
+        android:onClick="processPayment"
         android:text="process payment"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/posNoOrderConstraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/posAppToolbar">
+
+        <fr.ganfra.materialspinner.MaterialSpinner
+            android:id="@+id/posOrderListSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ms_baseColor="@color/colorPrimary"
+            app:ms_enableErrorLabel="true"
+            app:ms_enableFloatingLabel="true"
+            app:ms_floatingLabelText="Order #:"
+            app:ms_hint="Order #:"
+            app:ms_multiline="false"
+            app:ms_thickness="0dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/raleway"
+            android:text="Please Select an order from the drop down list above."
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posOrderListSpinner" />
+
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
