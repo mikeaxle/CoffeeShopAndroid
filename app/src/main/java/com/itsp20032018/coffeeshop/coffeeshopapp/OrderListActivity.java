@@ -1,11 +1,14 @@
 package com.itsp20032018.coffeeshop.coffeeshopapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +19,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -151,7 +156,7 @@ public class OrderListActivity extends AppCompatActivity {
                 // init order and convert document snapshot to order
                 order = documentSnapshot.toObject(Order.class);
 
-                if(!order.getStatus().equals("Cancelled")) {
+                if (!order.getStatus().equals("Cancelled")) {
 
                     // create views for dialog
                     dialogOrderNumber = dialogView.findViewById(R.id.orderDialogNumberTextView);
@@ -160,6 +165,13 @@ public class OrderListActivity extends AppCompatActivity {
                     dialogOrderItems = dialogView.findViewById(R.id.orderDialogOrderItemsTextView);
                     dialogPayForOrder = dialogView.findViewById(R.id.orderDialogPaybutton);
                     dialogClose = dialogView.findViewById(R.id.orderDialogCloseImageButton);
+
+                    // assign up text views
+                    dialogOrderNumber.setText("Order #: " + documentSnapshot.getId());
+                    dialogOrderTotal.setText("R" + order.getTotal());
+                    dialogOrderItems.setText(order.getOrderItemsString());
+                    dialogOrderStatus.setSelection(getIndexOfItem() + 2);
+
 
                     /**
                      * set up views
@@ -193,8 +205,37 @@ public class OrderListActivity extends AppCompatActivity {
                     dialogOrderStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            Toast.makeText(OrderListActivity.this, "i: " + 1 + " long: " + l, Toast.LENGTH_SHORT).show();
-                            // TODO: disable pay button if order is set to cancelled, show toast and save to FireBase without dismissing dialog
+//                            Toast.makeText(OrderListActivity.this, "i: " + 1 + " long: " + l, Toast.LENGTH_SHORT).show();
+
+//                            Toast.makeText(OrderListActivity.this, "Selected: " + getResources().getStringArray(R.array.order_status_role_array)[i - 1], Toast.LENGTH_SHORT).show();
+                            // if selection is not placeholder
+                            i = i - 1;
+                            if (i > -1) {
+
+                                // if selection == cancelled
+                                if (i == 3) {
+                                    // disable pay button
+                                    dialog.dismiss();
+                                }
+
+                                order.setStatus(getResources().getStringArray(R.array.order_status_role_array)[i]);
+
+                                documentSnapshot.getReference().set(order)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(OrderListActivity.this, "Order status changed to: " + order.getStatus(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(OrderListActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                Log.e(TAG, e.getMessage());
+                                            }
+                                        });
+
+                            }
 
                         }
 
@@ -204,13 +245,12 @@ public class OrderListActivity extends AppCompatActivity {
                         }
                     });
 
-                    // assign up text views
-                    dialogOrderNumber.setText("Order #: " + documentSnapshot.getId());
-                    dialogOrderTotal.setText("R" + order.getTotal());
-                    dialogOrderItems.setText(order.getOrderItemsString());
-                    dialogOrderStatus.setSelection(getIndexOfItem() + 1);
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
 
-
+                        }
+                    });
                     // show dialog
                     dialog.show();
 
@@ -230,6 +270,8 @@ public class OrderListActivity extends AppCompatActivity {
 
         tempArray = getApplicationContext().getResources().getStringArray(R.array.order_status_role_array);
         currentStatus = Arrays.asList(tempArray).lastIndexOf(order.getStatus());
+
+        Log.d(TAG, "current status: " + currentStatus);
 
         return currentStatus;
     }

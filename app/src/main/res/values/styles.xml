@@ -5,8 +5,8 @@
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
         <item name="cardViewStyle">@style/CardView</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorTertiary</item>
-        <item name="colorPrimaryDark">@color/colorSecondary</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
     </style>
 
     <!-- md dialog -->
@@ -42,6 +42,28 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#fff</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
+    </style>
+
+    <!-- medium filled blue button style-->
+    <style name="mediumFilledBlueButton">
+        <item name="android:layout_width">155dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">@drawable/rounded_corner_button_filled</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
+    </style>
+
+    <!-- medium  light blue button style-->
+    <style name="mediumLightBlueButton">
+        <item name="android:layout_width">155dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@drawable/rounded_corner_button</item>
         <item name="android:hapticFeedbackEnabled">true</item>
     </style>
 </resources>
