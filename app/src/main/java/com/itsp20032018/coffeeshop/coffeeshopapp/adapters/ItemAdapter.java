@@ -295,7 +295,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
                 }
 
                 // change paid status color
-                if(orderItem.isPaid()){
+                if(!orderItem.isPaid()){
                     ((OrderHolder) holder).orderPaid.getBackground().setColorFilter(Color.parseColor("#FF3D00"), PorterDuff.Mode.SRC_ATOP);
                     ((OrderHolder) holder).orderPaid.setTextColor(Color.parseColor("#ffffff"));
                     ((OrderHolder) holder).orderPaid.setText("unpaid");

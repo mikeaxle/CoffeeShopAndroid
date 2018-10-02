@@ -69,6 +69,12 @@ public class Order {
         return orderItemsString;
     }
 
+    @Override
+    public String toString(){
+        // TODO: make return order ID
+       return "" + this.getTotal();
+    }
+
     public boolean isPaid() {
         return paid;
     }

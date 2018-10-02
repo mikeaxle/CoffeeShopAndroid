@@ -173,6 +173,13 @@ public class OrderListActivity extends AppCompatActivity {
                     dialogOrderStatus.setSelection(getIndexOfItem() + 2);
 
 
+                    // enable or disable payment button
+                    if(order.isPaid()){
+                        dialogPayForOrder.setVisibility(View.GONE);
+                    } else {
+                        dialogPayForOrder.setVisibility(View.VISIBLE);
+                    }
+
                     /**
                      * set up views
                      */
