@@ -162,7 +162,12 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                            // updateUI(user);
                             finish();
+<<<<<<< Updated upstream
                             //user is successfully registred and logged in we will start the profile activity here
+=======
+                            //user is successfully registred and logged in
+                            //we will start the profile activity here
+>>>>>>> Stashed changes
                            Toast.makeText(registrationScreen.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent (getApplicationContext(), MainActivity.class));
                         } else
