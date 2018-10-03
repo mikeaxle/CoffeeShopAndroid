@@ -7,6 +7,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -53,6 +55,12 @@ dependencies {
     implementation 'com.github.riadhnet:MaterialSpinner:1.2.1'
     // material dialog
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    // background compatibility with older version of android APi
+    implementation 'com.android.support:multidex:1.0.3'
+
+    // firebase authentication
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

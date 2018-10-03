@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".registrationScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -27,7 +32,7 @@
             android:configChanges="orientation"
             android:label="@string/title_staffmember_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".POSActivity"
             android:configChanges="orientation"
@@ -51,13 +56,13 @@
             android:configChanges="orientation"
             android:label="@string/title_help"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".StockItemListActivity"
             android:configChanges="orientation"
             android:label="@string/title_stockitem_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".StockItemDetailActivity"
             android:configChanges="orientation"
@@ -74,7 +79,7 @@
             android:configChanges="orientation"
             android:label="@string/title_menuitem_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MenuItemDetailActivity"
             android:configChanges="orientation"
@@ -91,7 +96,7 @@
             android:configChanges="orientation"
             android:label="@string/title_order_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".OrderDetailActivity"
             android:configChanges="orientation"
@@ -103,12 +108,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.itsp20032018.coffeeshop.coffeeshopapp.OrderListActivity" />
         </activity>
-        <activity android:name=".PaymentSuccess">
+        <activity
+            android:name=".LoginScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:label="@string/title_payment_success"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        </activity>
+             />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            />
     </application>
 
 </manifest>
