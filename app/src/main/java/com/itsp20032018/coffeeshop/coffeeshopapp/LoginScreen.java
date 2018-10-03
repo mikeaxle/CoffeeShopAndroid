@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginScreen extends AppCompatActivity implements View.OnClickListener {
 
+    // views
 
     private Button buttonSignIn;
     private EditText editTextEmail;
@@ -28,6 +29,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
     private ProgressDialog progressDialog;
 
+    // firebase authentication
     private FirebaseAuth firebaseAuth;
 
 
@@ -35,6 +37,8 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
+
+        // init views
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -87,7 +91,11 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
                         if (task.isSuccessful()){
                             finish();
+                            Toast.makeText(LoginScreen.this, "Login successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent (getApplicationContext(), MainActivity.class));
+                        }else
+                        {
+                            Toast.makeText(LoginScreen.this, "Please make sure that the email and password are correct", Toast.LENGTH_SHORT).show();
                         }
 
                     }

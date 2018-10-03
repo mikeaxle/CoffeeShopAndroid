@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class registrationScreen extends AppCompatActivity implements View.OnClickListener {
 
+    //  views
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -27,12 +28,15 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
 
     private ProgressDialog progressDialog;
 
+    // firebase authentication
     private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_screen);
+
+        // init views
 
         firebaseAuth = FirebaseAuth.getInstance();
 
