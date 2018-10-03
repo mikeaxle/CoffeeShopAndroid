@@ -3,118 +3,121 @@
     package="com.itsp20032018.coffeeshop.coffeeshopapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:allowBackup="true"
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".registrationScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".StaffMemberListActivity"
+        <activity
+            android:name=".StaffMemberListActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:label="@string/title_staffmember_list"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
-        <activity android:name=".POSActivity"
-            android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".POSActivity"
+            android:configChanges="orientation"
             android:label="@string/title_pos"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".StaffMemberDetailActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:label="@string/title_staffmember_detail"
             android:parentActivityName=".StaffMemberListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.itsp20032018.coffeeshop.coffeeshopapp.StaffMemberListActivity" />
         </activity>
-
-        <activity android:name=".HelpActivity"
-            android:label="@string/title_help"
+        <activity
+            android:name=".HelpActivity"
             android:configChanges="orientation"
+            android:label="@string/title_help"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".StockItemListActivity"
-            android:label="@string/title_stockitem_list"
             android:configChanges="orientation"
+            android:label="@string/title_stockitem_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".StockItemDetailActivity"
-            android:label="@string/title_stockitem_detail"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
+            android:label="@string/title_stockitem_detail"
             android:parentActivityName=".StockItemListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.itsp20032018.coffeeshop.coffeeshopapp.StockItemListActivity" />
         </activity>
-
         <activity
             android:name=".MenuItemListActivity"
-            android:label="@string/title_menuitem_list"
             android:configChanges="orientation"
+            android:label="@string/title_menuitem_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MenuItemDetailActivity"
-            android:label="@string/title_menuitem_detail"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
+            android:label="@string/title_menuitem_detail"
             android:parentActivityName=".MenuItemListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.itsp20032018.coffeeshop.coffeeshopapp.MenuItemListActivity" />
         </activity>
-
-
         <activity
             android:name=".OrderListActivity"
-            android:label="@string/title_order_list"
             android:configChanges="orientation"
+            android:label="@string/title_order_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".OrderDetailActivity"
-            android:label="@string/title_order_detail"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
+            android:label="@string/title_order_detail"
             android:parentActivityName=".OrderListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.itsp20032018.coffeeshop.coffeeshopapp.OrderListActivity" />
         </activity>
-
+        <activity
+            android:name=".LoginScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+             />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            />
     </application>
 
 </manifest>
