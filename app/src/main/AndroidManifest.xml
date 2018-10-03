@@ -98,17 +98,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".OrderDetailActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_order_detail"
-            android:parentActivityName=".OrderListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.itsp20032018.coffeeshop.coffeeshopapp.OrderListActivity" />
-        </activity>
-        <activity
             android:name=".LoginScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait"

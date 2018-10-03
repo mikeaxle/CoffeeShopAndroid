@@ -3,6 +3,7 @@ package com.itsp20032018.coffeeshop.coffeeshopapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,12 +25,19 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextStoreName;
     private TextView textViewSignUp;
+
+    private TextInputLayout emailInputLayout;
+    private TextInputLayout passwordInputLayout;
+    private TextInputLayout storeNameInputLayout;
 
     private ProgressDialog progressDialog;
 
     // firebase authentication
     private FirebaseAuth firebaseAuth;
+
+    private boolean isValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +51,18 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
         progressDialog = new ProgressDialog(this);
 
         buttonRegister = findViewById(R.id.buttonRegister);
-        editTextEmail = findViewById(R.id.emailRegisterEditText);
-        editTextPassword = findViewById(R.id.passwordRegisterEditText);
+
+        editTextEmail = findViewById(R.id.registrationEmailEditText);
+        emailInputLayout = findViewById(R.id.registrationEmailInputLayout);
+
+        editTextPassword = findViewById(R.id.registrationPasswordEditText);
+        passwordInputLayout = findViewById(R.id.registrationPasswordInputLayout);
+
+        editTextStoreName = findViewById(R.id.registrationStoreNameEditText);
+        storeNameInputLayout =  findViewById(R.id.registrationStoreNameInputLayout);
 
         textViewSignUp = findViewById(R.id.alreadyRegisterTextView);
+
 
         buttonRegister.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
@@ -62,27 +78,78 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
     }
 
     private void registerUser(){
+        // store input values to strings and trim whitespaces from edit text views
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String storeName = editTextStoreName.getText().toString().trim();
 
+
+        // validations
         if (TextUtils.isEmpty(email))
         {
-            //email is empty
-            Toast.makeText(this, "Plese enter email", Toast.LENGTH_SHORT).show();
-            //stop the function execution further
-            return;
+            // show error
+            emailInputLayout.setError("Please enter an email address");
+
+            editTextEmail.setText(null);
+
+            // set validity to false
+            isValid = false;
+
+        } else {
+
+            // set error to null
+            emailInputLayout.setError(null);
+
+            // set validity to true
+            isValid = true;
+
         }
 
         if (TextUtils.isEmpty(password))
         {
-            // password is empty
-            Toast.makeText(this, "Plese enter password", Toast.LENGTH_SHORT).show();
-            //stop the function execution further
-            return;
+            // show error
+            passwordInputLayout.setError("Please enter a password");
+
+            editTextPassword.setText(null);
+
+            // set validity to false
+            isValid = false;
+
+        } else {
+
+            // set error to null
+            passwordInputLayout.setError(null);
+
+            // set validity to true
+            isValid = true;
         }
+
+        if(TextUtils.isEmpty(storeName)){
+
+            // show error
+            storeNameInputLayout.setError("Please enter a store name");
+
+            editTextStoreName.setText(null);
+
+            // set validity to false
+            isValid = false;
+
+        } else {
+
+            // set error to null
+            storeNameInputLayout.setError(null);
+
+            // set validity to true
+            isValid = true;
+        }
+
+        // exit if error is detected
+        if(!isValid) return;
 
         // if validation is okay
         // we will first show a progressbar
+
+
 
         progressDialog.setMessage("Registering user....");
         progressDialog.show();
@@ -91,23 +158,20 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                            // updateUI(user);
                             finish();
-                            //user is successfully registred and logged in
-                            //we will start the profile activity here
-                           Toast.makeText(registrationScreen.this, "Registered succesfully", Toast.LENGTH_SHORT).show();
+                            //user is successfully registred and logged in we will start the profile activity here
+                           Toast.makeText(registrationScreen.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent (getApplicationContext(), MainActivity.class));
-                        }else
+                        } else
                         {
                             Toast.makeText(registrationScreen.this, "Could not register please try again", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }
-
 
 
     @Override
