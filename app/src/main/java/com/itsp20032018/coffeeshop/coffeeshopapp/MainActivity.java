@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
+
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,7 +16,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar appToolbar = (Toolbar) findViewById(R.id.mainAppToolbar);
+        // get shop details from shared preferences
+//        TinyDB tinyDB = new TinyDB(getApplicationContext());
+        Shop shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
+
+        Toolbar appToolbar = findViewById(R.id.mainAppToolbar);
+        TextView mainTitle = findViewById(R.id.mainTitleTextView);
+        mainTitle.setText(shop.getName());
 
     }
 

@@ -31,6 +31,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.book.BookLoading;
@@ -77,6 +78,9 @@ public class StockItemDetailActivity extends AppCompatActivity {
     // mode
     String mode;
 
+    // object to store shop details
+    Shop shop;
+
     // views
     TextView title;
     TextView stockID;
@@ -109,6 +113,9 @@ public class StockItemDetailActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // configure image picker settings
         EasyImage.configuration(this)
@@ -340,7 +347,7 @@ public class StockItemDetailActivity extends AppCompatActivity {
         final StockItem newStockItem = new StockItem(name.getText().toString(), Double.parseDouble(price.getText().toString()),
                 Double.parseDouble(stockLevel.getText().toString()), Double.parseDouble(stockReorder.getText().toString()),
                 "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/stock%2Fsp_camera.png?alt=media&token=0324360a-0b3f-412c-8a8e-f836009c5dea",
-                available.isChecked());
+                available.isChecked(), shop.getOwner());
 
         // check if image was selected or image was changed
         if (isImageChanged) {

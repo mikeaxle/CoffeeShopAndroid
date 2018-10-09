@@ -32,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.book.BookLoading;
 
@@ -97,6 +98,9 @@ public class MenuItemDetailActivity extends AppCompatActivity {
     File newImage = null;
     boolean isImageChanged = false;
 
+    // object to store shop details
+    Shop shop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +118,9 @@ public class MenuItemDetailActivity extends AppCompatActivity {
         EasyImage.configuration(this)
                 .setImagesFolderName("Coffee Shop")
                 .setCopyExistingPicturesToPublicLocation(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // init views
         title = findViewById(R.id.menuDetailTitleTextView);
@@ -340,7 +347,7 @@ public class MenuItemDetailActivity extends AppCompatActivity {
         // get text from views and initialize new menu item with default stock image
         final MenuEntry newMenuEntry = new MenuEntry(name.getText().toString(),Double.parseDouble(price.getText().toString()),
                 description.getText().toString(), available.isChecked(),
-                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/menu%2Fsp_menu.png?alt=media&token=b93c0adc-511d-4bcd-b7b7-14bc087325f2");
+                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/menu%2Fsp_menu.png?alt=media&token=b93c0adc-511d-4bcd-b7b7-14bc087325f2", shop.getOwner());
 
         // check if image was selected or image was changed
         if (isImageChanged) {

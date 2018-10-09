@@ -13,7 +13,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
 
 import java.util.Objects;
@@ -46,6 +48,11 @@ public class StockItemListActivity extends AppCompatActivity {
     private ItemAdapter adapter;
 
 
+    // object to store shop details
+    Shop shop;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,9 @@ public class StockItemListActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // set up button & click listener
         addStockButton = (Button) findViewById(R.id.addStockbutton);
@@ -99,11 +109,12 @@ public class StockItemListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-//        Query query = listRef.orderBy("quantity", Query.Direction.DESCENDING);
+        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+                .orderBy("name", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<StockItem> options =  new FirestoreRecyclerOptions.Builder<StockItem>()
-                .setQuery(listRef, StockItem.class)
+                .setQuery(query, StockItem.class)
                 .build();
 
 

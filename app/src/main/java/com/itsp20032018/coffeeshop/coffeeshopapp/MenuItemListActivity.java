@@ -26,9 +26,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Order;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.transforms.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -88,6 +90,9 @@ public class MenuItemListActivity extends AppCompatActivity {
     public Order currentOrder;
 
 
+    // object to store shop details
+    Shop shop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +105,9 @@ public class MenuItemListActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // init inflater
         inflater = LayoutInflater.from(this);
@@ -114,6 +122,7 @@ public class MenuItemListActivity extends AppCompatActivity {
 
         // init order
         currentOrder = new Order();
+        currentOrder.setShop(shop.getOwner());
 
         // load list from FireBase
         loadList();
@@ -141,11 +150,12 @@ public class MenuItemListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-//        Query query = listRef.orderBy("quantity", Query.Direction.DESCENDING);
+        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+                .orderBy("name", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<MenuEntry> options = new FirestoreRecyclerOptions.Builder<MenuEntry>()
-                .setQuery(listRef, MenuEntry.class)
+                .setQuery(query, MenuEntry.class)
                 .build();
 
         // assign ItemAdapter, type is the item type to list

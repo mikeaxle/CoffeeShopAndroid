@@ -31,6 +31,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.book.BookLoading;
@@ -79,6 +80,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
     // mode
     String mode;
 
+    // object to store shop details
+    Shop shop;
+
     // views
     TextView title;
     TextView staffID;
@@ -119,6 +123,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         EasyImage.configuration(this)
                 .setImagesFolderName("Coffee Shop")
                 .setCopyExistingPicturesToPublicLocation(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // get extras from intent
         Intent i = getIntent();
@@ -374,7 +381,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         final StaffMember newStaffMember = new StaffMember(firstName.getText().toString(), lastName.getText().toString(),
                 role.getItemAtPosition(role.getSelectedItemPosition() - 1).toString(), gender.getItemAtPosition(gender.getSelectedItemPosition() - 1).toString(),
                 address.getText().toString(), phoneNumber.getText().toString(), emailAddress.getText().toString(),
-                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
+                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616",shop.getOwner());
 
         // check if image was selected or image was changed
         if (isImageChanged) {
