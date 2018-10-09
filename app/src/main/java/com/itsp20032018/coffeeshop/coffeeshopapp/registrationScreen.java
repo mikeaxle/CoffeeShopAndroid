@@ -2,24 +2,29 @@ package com.itsp20032018.coffeeshop.coffeeshopapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 
 public class registrationScreen extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "registrationScreen";
 
     //  views
     private Button buttonRegister;
@@ -34,8 +39,11 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
 
     private ProgressDialog progressDialog;
 
-    // firebase authentication
-    private FirebaseAuth firebaseAuth;
+    // firebase authentication instance
+    private FirebaseAuth   firebaseAuth = FirebaseAuth.getInstance();
+
+    // FireBase database instance
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private boolean isValid = false;
 
@@ -45,39 +53,39 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_registration_screen);
 
         // init views
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
         progressDialog = new ProgressDialog(this);
-
         buttonRegister = findViewById(R.id.buttonRegister);
-
         editTextEmail = findViewById(R.id.registrationEmailEditText);
         emailInputLayout = findViewById(R.id.registrationEmailInputLayout);
-
         editTextPassword = findViewById(R.id.registrationPasswordEditText);
         passwordInputLayout = findViewById(R.id.registrationPasswordInputLayout);
-
         editTextStoreName = findViewById(R.id.registrationStoreNameEditText);
-        storeNameInputLayout =  findViewById(R.id.registrationStoreNameInputLayout);
-
+        storeNameInputLayout = findViewById(R.id.registrationStoreNameInputLayout);
         textViewSignUp = findViewById(R.id.alreadyRegisterTextView);
 
-
+        // add click listeners
         buttonRegister.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
 
-
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-       // updateUI(currentUser);
+
+        // check if user is already logged in
+        if (firebaseAuth.getCurrentUser() != null) {
+            // send to main activity
+            Toast.makeText(this, "Logged in as " + firebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
-    private void registerUser(){
+    /**
+     * Registers user on firebase and sends user to next screen
+     */
+    private void registerUser() {
         // store input values to strings and trim whitespaces from edit text views
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -85,54 +93,75 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
 
 
         // validations
-        if (TextUtils.isEmpty(email))
-        {
-            // show error
-            emailInputLayout.setError("Please enter an email address");
-
-            editTextEmail.setText(null);
-
-            // set validity to false
-            isValid = false;
-
-        } else {
-
-            // set error to null
-            emailInputLayout.setError(null);
-
+        if (isStoreNameValid(storeName) && isEmailValid(email) && isPasswordValid(password)) {
             // set validity to true
             isValid = true;
-
-        }
-
-        if (TextUtils.isEmpty(password))
-        {
-            // show error
-            passwordInputLayout.setError("Please enter a password");
-
-            editTextPassword.setText(null);
-
+        } else {
             // set validity to false
             isValid = false;
-
-        } else {
-
-            // set error to null
-            passwordInputLayout.setError(null);
-
-            // set validity to true
-            isValid = true;
         }
 
-        if(TextUtils.isEmpty(storeName)){
+        // exit if error is detected
+        if (!isValid) return;
+
+        // if validation is okay, we will first show a progressbar
+        progressDialog.setMessage("Registering user....");
+        progressDialog.show();
+
+        // firebase user registration with email and password
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .continueWith(new Continuation<AuthResult, Object>() {
+                    @Override
+                    public Object then(@NonNull Task<AuthResult> task) throws Exception {
+                        // if there is an error
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        // create store with UID and name linked
+                        return db.collection("shop").add(new Shop( storeName, task.getResult().getUser().getUid()));
+
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Object>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Object> task) {
+                        if (task.isSuccessful()) {
+
+                            //user is successfully registered and logged in we will start the profile activity here
+                            Toast.makeText(registrationScreen.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                        } else {
+
+                            Toast.makeText(registrationScreen.this, "Could not register please try again", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(registrationScreen.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * Validates store name edit text
+     * @param storeName
+     * @return boolean
+     */
+    private boolean isStoreNameValid(String storeName) {
+        if (TextUtils.isEmpty(storeName)) {
 
             // show error
             storeNameInputLayout.setError("Please enter a store name");
 
-            editTextStoreName.setText(null);
-
             // set validity to false
-            isValid = false;
+            return false;
 
         } else {
 
@@ -140,49 +169,71 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
             storeNameInputLayout.setError(null);
 
             // set validity to true
-            isValid = true;
+            return true;
         }
+    }
 
-        // exit if error is detected
-        if(!isValid) return;
+    /**
+     * Validates password edit text
+     * @param password
+     * @return boolean
+     */
+    private boolean isPasswordValid(String password) {
+        if (TextUtils.isEmpty(password)) {
+            // show error
+            passwordInputLayout.setError("Please enter a password");
 
-        // if validation is okay
-        // we will first show a progressbar
+            // set validity to false
+            return false;
 
+        } else {
 
+            // set error to null
+            passwordInputLayout.setError(null);
 
-        progressDialog.setMessage("Registering user....");
-        progressDialog.show();
+            // set validity to true
+            return true;
+        }
+    }
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                           // updateUI(user);
-                            finish();
-                            //user is successfully registred and logged in we will start the profile activity here
-                           Toast.makeText(registrationScreen.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent (getApplicationContext(), MainActivity.class));
-                        } else
-                        {
-                            Toast.makeText(registrationScreen.this, "Could not register please try again", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    /**
+     * Validates email edit text
+     * @param email
+     * @return boolean
+     */
+    private boolean isEmailValid(String email) {
+        if (TextUtils.isEmpty(email)) {
+            // show error
+            emailInputLayout.setError("Please enter an email address");
+
+            // set validity to false
+            return false;
+
+        } else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            // show error
+            emailInputLayout.setError("Please enter a valid email address");
+
+            // set validity to false
+            return  false;
+        } else {
+
+            // set error to null
+            emailInputLayout.setError(null);
+
+            // set validity to true
+            return true;
+
+        }
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v == buttonRegister )
-        {
+        if (v == buttonRegister) {
             registerUser();
         }
 
-        if (v == textViewSignUp)
-        {
+        if (v == textViewSignUp) {
             startActivity(new Intent(this, LoginScreen.class));
         }
     }

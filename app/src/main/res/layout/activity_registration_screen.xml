@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/raleway"
-            android:text="Already Registered? Click here. "
+            android:text="Already Registered? Tap here. "
             android:textAlignment="center"
             android:textColor="#2699FB"
             android:textSize="22sp"
@@ -98,9 +98,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_store_black_24dp"
-                android:ems="10"
+                android:fontFamily="@font/montserrat"
                 android:hint="Store Name"
-                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -137,7 +138,6 @@
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent">
 
             <EditText
@@ -145,9 +145,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
-                android:ems="10"
+                android:fontFamily="@font/montserrat"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
 
