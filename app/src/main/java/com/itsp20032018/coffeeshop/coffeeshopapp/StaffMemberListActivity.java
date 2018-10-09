@@ -14,7 +14,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
 
 import java.util.Objects;
@@ -46,6 +48,9 @@ public class StaffMemberListActivity extends AppCompatActivity {
     // custom adapter
     private ItemAdapter adapter;
 
+    // object to store shop details
+    Shop shop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,9 @@ public class StaffMemberListActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // set up button & click listener
         addStaffButton = (Button) findViewById(R.id.addStaffbutton);
@@ -100,11 +108,12 @@ public class StaffMemberListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-//        Query query = listRef.orderBy("quantity", Query.Direction.DESCENDING);
+        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+                .orderBy("firstName", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<StaffMember> options =  new FirestoreRecyclerOptions.Builder<StaffMember>()
-                .setQuery(listRef, StaffMember.class)
+                .setQuery(query, StaffMember.class)
                 .build();
 
         // assign ItemAdapter, type is the item type to list

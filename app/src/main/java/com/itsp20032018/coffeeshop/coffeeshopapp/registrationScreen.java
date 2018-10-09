@@ -39,6 +39,12 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
 
     private ProgressDialog progressDialog;
 
+    // shared preferences helper class
+    TinyDB tinyDB;
+
+    // object to store shop
+    Shop shop;
+
     // firebase authentication instance
     private FirebaseAuth   firebaseAuth = FirebaseAuth.getInstance();
 
@@ -118,8 +124,11 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                             throw task.getException();
                         }
 
-                        // create store with UID and name linked
-                        return db.collection("shop").add(new Shop( storeName, task.getResult().getUser().getUid()));
+                        // init shop object
+                        shop = new Shop( storeName, task.getResult().getUser().getUid());
+
+                        // create store with UID and name linked, UID is also firebase ID of shop
+                        return db.collection("shop").document(shop.getOwner()).set(shop);
 
                     }
                 })
@@ -128,6 +137,10 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                     public void onComplete(@NonNull Task<Object> task) {
                         if (task.isSuccessful()) {
 
+                            // store shop in shared preferences
+                            tinyDB = new TinyDB(getApplicationContext());
+                            tinyDB.putObject("SHOP", shop);
+
                             //user is successfully registered and logged in we will start the profile activity here
                             Toast.makeText(registrationScreen.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -135,6 +148,7 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                         } else {
 
                             Toast.makeText(registrationScreen.this, "Could not register please try again", Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
 
                         }
 
@@ -145,6 +159,7 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(registrationScreen.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, e.getMessage());
+                        progressDialog.dismiss();
                     }
                 });
     }

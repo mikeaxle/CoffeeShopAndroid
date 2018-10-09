@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Order;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -73,6 +74,9 @@ public class OrderListActivity extends AppCompatActivity {
     // object to current store object
     Order order;
 
+    // object to store shop details
+    Shop shop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +89,9 @@ public class OrderListActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // get shop details
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         // init inflater
         inflater = LayoutInflater.from(this);
@@ -122,7 +129,8 @@ public class OrderListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-        Query query = listRef.orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<Order> options = new FirestoreRecyclerOptions.Builder<Order>()

@@ -14,6 +14,7 @@ public class MenuEntry {
     private boolean available;
     private String image;
     private int quantity;
+    private String shop;
 
     // no args constructor, needed to use with FireStore
     public MenuEntry() {
@@ -28,13 +29,14 @@ public class MenuEntry {
      * @param available
      * @param image
      */
-    public MenuEntry(String name, double price, String description, ArrayList<String> inventoryItems, boolean available, String image) {
+    public MenuEntry(String name, double price, String description, ArrayList<String> inventoryItems, boolean available, String image, String shop) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.inventoryItems = inventoryItems;
         this.available = available;
         this.image = image;
+        this.shop = shop;
     }
 
     /**
@@ -45,12 +47,21 @@ public class MenuEntry {
      * @param available
      * @param image
      */
-    public MenuEntry(String name, double price, String description, boolean available, String image) {
+    public MenuEntry(String name, double price, String description, boolean available, String image, String shop) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.available = available;
         this.image = image;
+        this.shop = shop;
+    }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
     }
 
     public String getName() {

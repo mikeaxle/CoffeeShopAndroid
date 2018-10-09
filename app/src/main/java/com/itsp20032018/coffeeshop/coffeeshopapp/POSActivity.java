@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Order;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +70,8 @@ public class POSActivity extends AppCompatActivity {
     // mode text
     String mode = "card";
 
+    Shop shop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,8 @@ public class POSActivity extends AppCompatActivity {
         // enable back button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        shop = new TinyDB(getApplicationContext()).getObject("SHOP", Shop.class);
 
         Intent i = getIntent();
         if(!i.hasExtra("PATH")) {
@@ -96,6 +101,8 @@ public class POSActivity extends AppCompatActivity {
             loadOrderInfo();
         }
 
+
+
     }
 
     /**
@@ -103,6 +110,7 @@ public class POSActivity extends AppCompatActivity {
      */
     private void loadOrderDropDown(){
         db.collection("orders")
+                .whereEqualTo("shop", shop.getOwner())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

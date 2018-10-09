@@ -1,8 +1,12 @@
 package com.itsp20032018.coffeeshop.coffeeshopapp.model;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class Shop {
-    private String name;
-    private String owner;
+    private String name = "Coffee Shop";
+    private String owner = "WUcTyxxcVmWeJr4ht6bvITCdilE2";
+
 
     Shop(){}
 
@@ -14,6 +18,7 @@ public class Shop {
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;

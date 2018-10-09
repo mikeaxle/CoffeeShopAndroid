@@ -43,7 +43,7 @@ public class StaffMember {
      * @param emailAddress
      * @param image
      */
-    public StaffMember(String firstName, String lastName, String role, String gender, String address, String phoneNumber, String emailAddress, String image) {
+    public StaffMember(String firstName, String lastName, String role, String gender, String address, String phoneNumber, String emailAddress, String image, String shop) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
@@ -52,6 +52,7 @@ public class StaffMember {
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
         this.image = image;
+        this.shop = shop;
     }
 
     public String getShop() {

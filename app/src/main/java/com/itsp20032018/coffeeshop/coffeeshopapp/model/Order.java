@@ -13,6 +13,7 @@ public class Order {
     private String status = "Pending";
     private String employee = "test_staff";
     private boolean paid = false;
+    private String shop;
 
     // array list of menu items where quantity > 0
     public ArrayList<MenuEntry> orderItems = new ArrayList<>();
@@ -27,12 +28,13 @@ public class Order {
      * @param employee      firebase id of logged in employee creating the order
      * @param orderItems    array list of menu items with quantity > 0
      */
-    public Order(Date timestamp, String status, String employee, ArrayList<MenuEntry> orderItems, boolean paid) {
+    public Order(Date timestamp, String status, String employee, ArrayList<MenuEntry> orderItems, boolean paid, String shop) {
         this.timestamp = timestamp;
         this.status = status;
         this.employee = employee;
         this.orderItems = orderItems;
         this.paid = paid;
+        this.shop = shop;
     }
 
     /**
@@ -73,6 +75,14 @@ public class Order {
     public String toString(){
         // TODO: make return order ID
        return "" + this.getTotal();
+    }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
     }
 
     public boolean isPaid() {

@@ -11,6 +11,7 @@ public class StockItem{
     private double reorder;
     private String image;
     private boolean available;
+    private String shop;
 
     // no args constructor, needed to use with FireStore
     StockItem(){}
@@ -23,13 +24,22 @@ public class StockItem{
      * @param reorder   level at which stock is automatically reordered from supplier
      * @param image     string url of image location in FireBase storage
      */
-    public StockItem(String name, double price, double quantity, double reorder, String image, boolean available){
+    public StockItem(String name, double price, double quantity, double reorder, String image, boolean available, String shop){
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.reorder = reorder;
         this.image = image;
         this.available = available;
+        this.shop = shop;
+    }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
     }
 
     public String getName() {
