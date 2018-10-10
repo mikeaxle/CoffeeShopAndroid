@@ -8,5 +8,25 @@
     tools:context=".HelpActivity">
 
 
+    <ImageView
+        android:id="@+id/imageHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/question" />
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/helppdf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="130dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageHelp" />
+
+
+
 
 </android.support.constraint.ConstraintLayout>

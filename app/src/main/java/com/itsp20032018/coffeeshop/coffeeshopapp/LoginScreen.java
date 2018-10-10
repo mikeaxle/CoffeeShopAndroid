@@ -64,7 +64,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         if (TextUtils.isEmpty(email))
         {
             //email is empty
-            Toast.makeText(this, "Plese enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
             //stop the function execution further
             return;
         }
