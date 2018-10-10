@@ -44,7 +44,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
         this.type = type;
     }
 
-    /* ViewHolder classes TODO: add other item view holder classes
+    /* ViewHolder classes
      * * * * * * * * * * * *
      * * * * * * * * * * * *
      **/
@@ -351,8 +351,6 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
                         .inflate(R.layout.order_list_content, parent, false);
                 // return new StockHolder view holder object
                 return new OrderHolder(view);
-
-            // TODO: add other list items
         }
 
         return null;
