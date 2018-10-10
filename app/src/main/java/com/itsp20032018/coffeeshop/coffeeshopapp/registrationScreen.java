@@ -130,6 +130,8 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                         // create store with UID and name linked, UID is also firebase ID of shop
                         return db.collection("shop").document(shop.getOwner()).set(shop);
 
+                        // TODO: write new staff member with 'admin' role
+
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Object>() {
