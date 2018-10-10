@@ -55,6 +55,7 @@ import pl.aprilapps.easyphotopicker.EasyImageConfig;
  * in a {@link StaffMemberListActivity}.
  */
 public class StaffMemberDetailActivity extends AppCompatActivity {
+    // TODO: send email to user added with password information
 
     // TAG for device logs
     private static final String TAG = "StaffMemberActivity";
