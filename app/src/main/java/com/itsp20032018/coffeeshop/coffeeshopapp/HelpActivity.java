@@ -36,8 +36,8 @@ public class HelpActivity extends AppCompatActivity {
         //setSupportActionBar(appToolbar);
 
         // enable back button
-      Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+     // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         helpImageView = findViewById(R.id.imageHelp);
         pdfView = findViewById(R.id.helppdf);

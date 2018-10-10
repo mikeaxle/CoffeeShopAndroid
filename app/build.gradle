@@ -61,6 +61,11 @@ dependencies {
 
     // firebase authentication
     implementation 'com.google.firebase:firebase-auth:16.0.3'
+
+    // pdf viewer
+
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
