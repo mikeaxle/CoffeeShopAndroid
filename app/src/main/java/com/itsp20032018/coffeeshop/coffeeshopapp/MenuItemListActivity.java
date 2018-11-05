@@ -315,6 +315,11 @@ public class MenuItemListActivity extends AppCompatActivity {
      * @param view
      */
     public void createNewOrder(View view) {
+        if(currentOrder.orderItems.size() == 0) {
+            Toast.makeText(this, "Please add items to order.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // add time stamp
         currentOrder.setTimestamp(new Date());
 

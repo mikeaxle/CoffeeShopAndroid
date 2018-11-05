@@ -63,8 +63,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.3'
 
     // pdf viewer
-
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
+    // firebase cloud functions
+    implementation 'com.google.firebase:firebase-functions:16.0.1'
 
 }
 

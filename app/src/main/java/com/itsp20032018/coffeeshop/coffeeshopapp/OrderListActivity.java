@@ -152,6 +152,8 @@ public class OrderListActivity extends AppCompatActivity {
         // set recycler view adapter to ItemAdapter
         orderRecyclerView.setAdapter(adapter);
 
+        // TODO: make order numbers be IDS, everyday starts at 00
+
         // set click listener
         adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
             @Override

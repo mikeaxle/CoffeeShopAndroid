@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -71,6 +73,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
 
     // get storage reference, assign name of file to store image in
     StorageReference storageRef = storage.getReference().child("staff");
+
+    // firebase authentication isntance
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     // get image reference
     StorageReference imageRef;
@@ -195,7 +200,17 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                         staffID.setText("staff ID: " + documentSnapshot.getId());
                         firstName.setText(staffMember.getFirstName());
                         lastName.setText(staffMember.getLastName());
-                        role.setSelection(getIndexOfItem("role") + 1);
+
+                        // check if role is admin
+                        if (staffMember.getRole().equals("Admin")) {
+                            role.setEnabled(false);
+                            deleteButton.setVisibility(View.GONE);
+                            emailAddress.setEnabled(false);
+
+                        } else {
+                            role.setSelection(getIndexOfItem("role") + 1);
+                        }
+
                         gender.setSelection(getIndexOfItem("gender") + 1);
                         address.setText(staffMember.getAddress());
                         phoneNumber.setText(staffMember.getPhoneNumber());
@@ -314,7 +329,16 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                             staffID.setText("staff ID: " + documentSnapshot.getId());
                             firstName.setText(staffMember.getFirstName());
                             lastName.setText(staffMember.getLastName());
-                            role.setSelection(getIndexOfItem("role") + 1);
+
+                            // check if role is admin
+                            if (staffMember.getRole().equals("Admin")) {
+                                role.setEnabled(false);
+                                deleteButton.setVisibility(View.GONE);
+
+                            } else {
+                                role.setSelection(getIndexOfItem("role") + 1);
+                            }
+
                             gender.setSelection(getIndexOfItem("gender") + 1);
                             address.setText(staffMember.getAddress());
                             phoneNumber.setText(staffMember.getPhoneNumber());
@@ -379,10 +403,22 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         showLoadingBar();
 
         // get text from views and initialize new staff item with default staff image
-        final StaffMember newStaffMember = new StaffMember(firstName.getText().toString(), lastName.getText().toString(),
-                role.getItemAtPosition(role.getSelectedItemPosition() - 1).toString(), gender.getItemAtPosition(gender.getSelectedItemPosition() - 1).toString(),
-                address.getText().toString(), phoneNumber.getText().toString(), emailAddress.getText().toString(),
-                "https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616",shop.getOwner());
+        final StaffMember newStaffMember = new StaffMember();
+        newStaffMember.setFirstName(firstName.getText().toString());
+        newStaffMember.setLastName(lastName.getText().toString());
+
+        if(staffMember ==  null){
+            newStaffMember.setRole(role.getItemAtPosition(role.getSelectedItemPosition() - 1).toString());
+        } else {
+           if(staffMember.getRole().equals("Admin")) newStaffMember.setRole("Admin");
+        }
+
+        newStaffMember.setGender(gender.getItemAtPosition(gender.getSelectedItemPosition() - 1).toString());
+        newStaffMember.setAddress(address.getText().toString());
+        newStaffMember.setPhoneNumber(phoneNumber.getText().toString());
+        newStaffMember.setEmailAddress(emailAddress.getText().toString());
+        newStaffMember.setImage("https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
+        newStaffMember.setShop(shop.getOwner());
 
         // check if image was selected or image was changed
         if (isImageChanged) {
@@ -446,7 +482,8 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                 // set new staff memberimage to old staff member image
                 newStaffMember.setImage(staffMember.getImage());
             }
-            // saveButton to FireBase
+
+            // save to FireBase
             saveToFireBase(newStaffMember);
         }
     }
@@ -486,15 +523,39 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         switch (mode) {
             // adding new item to FireBase
             case "add":
+                // set action settings
+                ActionCodeSettings actionCodeSettings =
+                        ActionCodeSettings.newBuilder()
+                                // URL you want to redirect back to. The domain (www.example.com) for this
+                                // URL must be whitelisted in the Firebase Console.
+                                .setUrl("https://www.example.com/finishSignUp?cartId=1234")
+                                // This must be true
+                                .setHandleCodeInApp(true)
+                                .setAndroidPackageName(
+                                        "com.itsp20032018.coffeeshop.coffeeshopapp",
+                                        true, /* installIfNotAvailable */
+                                        "19"    /* minimumVersion */)
+                                .build();
+
                 db.collection("staff").add(newStaffMember)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 // show success toast
-                                Toast.makeText(StaffMemberDetailActivity.this, "Stock item added.", Toast.LENGTH_SHORT).show();
-
-                                // redirect back to list
+                                Toast.makeText(StaffMemberDetailActivity.this, "Staff member added.", Toast.LENGTH_SHORT).show();
                                 finish();
+
+//                                auth.sendSignInLinkToEmail(newStaffMember.getEmailAddress(), actionCodeSettings)
+//                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                if (task.isSuccessful()) {
+//                                                    Log.d(TAG, "Email sent.");
+//                                                    // redirect back to list
+//                                                    finish();
+//                                                }
+//                                            }
+//                                        });
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -510,6 +571,8 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                                 showLoadingBar();
                             }
                         });
+
+
                 break;
             case "edit":
                 // update existing item in FireBase

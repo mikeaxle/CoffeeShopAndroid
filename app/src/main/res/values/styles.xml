@@ -66,4 +66,12 @@
         <item name="android:background">@drawable/rounded_corner_button</item>
         <item name="android:hapticFeedbackEnabled">true</item>
     </style>
+
+    <!-- edit text layout style -->
+    <style name="StyledTilEditTextTheme">
+        <item name="android:singleLine">true</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+    </style>
 </resources>

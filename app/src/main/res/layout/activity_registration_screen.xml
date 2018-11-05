@@ -99,12 +99,16 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_store_black_24dp"
                 android:fontFamily="@font/montserrat"
+                android:ems="10"
                 android:hint="Store Name"
                 android:singleLine="true"
+                android:inputType="text"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
         </android.support.design.widget.TextInputLayout>
+
+
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/registrationEmailInputLayout"
@@ -125,6 +129,7 @@
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
         </android.support.design.widget.TextInputLayout>

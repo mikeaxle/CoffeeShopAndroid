@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
+import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
 
 public class registrationScreen extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "registrationScreen";
@@ -44,6 +45,8 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
 
     // object to store shop
     Shop shop;
+
+    StaffMember staffMember;
 
     // firebase authentication instance
     private FirebaseAuth   firebaseAuth = FirebaseAuth.getInstance();
@@ -99,7 +102,7 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
 
 
         // validations
-        if (isStoreNameValid(storeName) && isEmailValid(email) && isPasswordValid(password)) {
+        if (isStoreNameValid(storeName) || isEmailValid(email) || isPasswordValid(password)) {
             // set validity to true
             isValid = true;
         } else {
@@ -127,11 +130,34 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                         // init shop object
                         shop = new Shop( storeName, task.getResult().getUser().getUid());
 
+                        // init staff member object
+                        staffMember = new StaffMember();
+                        staffMember.setShop(task.getResult().getUser().getUid());
+                        staffMember.setAddress("Cape Town");
+                        staffMember.setFirstName("Store");
+                        staffMember.setLastName("Owner");
+                        staffMember.setGender("Male");
+                        staffMember.setRole("Admin");
+                        staffMember.setPhoneNumber("0000000000");
+                        staffMember.setEmailAddress(task.getResult().getUser().getEmail());
+                        staffMember.setImage("https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
+
                         // create store with UID and name linked, UID is also firebase ID of shop
                         return db.collection("shop").document(shop.getOwner()).set(shop);
 
-                        // TODO: write new staff member with 'admin' role
+                    }
+                })
+                .continueWith(new Continuation<Object, Object>() {
+                    @Override
+                    public Object then(@NonNull Task<Object> task) throws Exception {
 
+                        // if there is an error
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        // create staff member with admin role
+                        return db.collection("staff").add(staffMember);
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Object>() {
