@@ -61,7 +61,7 @@ public class PaymentSuccess extends AppCompatActivity {
         emailAddress = findViewById(R.id.printEmailEditText);
 
         // set up views
-        orderNumber.setText("Would you like to print to receipt for \norder # " +  orderId + "?");
+        orderNumber.setText("Would you like to print to receipt for \norder # 0001?");
         togglePrintMode("email");
 
         // set up button click listeners

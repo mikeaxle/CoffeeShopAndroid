@@ -194,7 +194,7 @@ public class POSActivity extends AppCompatActivity {
 
                             // assign views
                             orderTotal.setText("R" + order.getTotal());
-                            orderNumber.setText("Order #: " + documentSnapshot.getId());
+                            orderNumber.setText("Order #: 0001"); //+ documentSnapshot.getId());
                             statusDate.setText(order.getStatus() + " - " +  dateFormat.format(order.getTimestamp()));
                             togglePaymentMode("card");
 

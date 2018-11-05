@@ -14,7 +14,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
@@ -108,12 +107,12 @@ public class StaffMemberListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-        Query query = listRef.whereEqualTo("shop", shop.getOwner())
-                .orderBy("firstName", Query.Direction.ASCENDING);
+//        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+//                .orderBy("firstName", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<StaffMember> options =  new FirestoreRecyclerOptions.Builder<StaffMember>()
-                .setQuery(query, StaffMember.class)
+                .setQuery(listRef, StaffMember.class)
                 .build();
 
         // assign ItemAdapter, type is the item type to list

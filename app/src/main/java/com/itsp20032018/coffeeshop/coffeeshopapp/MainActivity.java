@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.ordersTextView) intent = new Intent(this, OrderListActivity.class);
 
-        if (id == R.id.posTextView) intent = new Intent(this, POSActivity.class);
+        if (id == R.id.posTextView) intent = new Intent(this, OrderListActivity.class);
 
         if (id == R.id.helpTextView) intent = new Intent(this, HelpActivity.class);
 

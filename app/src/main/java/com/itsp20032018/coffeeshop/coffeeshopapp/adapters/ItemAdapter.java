@@ -27,6 +27,8 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
     // string to identify the item type of the list
     String type;
 
+    int orderNumber = 0000;
+
     // item click listener
     OnItemClickListener listener;
     com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter.OnItemLongClickListener longListener;
@@ -269,7 +271,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter {
                 // set order views
                 ((OrderHolder) holder).orderTotal.setText(String.valueOf("Total: " + orderItem.getTotal()));
                 // TODO: get and display order number
-//                ((OrderHolder) holder).orderNumber.setText("Order #: " + orderItem);
+                ((OrderHolder) holder).orderNumber.setText("Order #: 000" + ++orderNumber);
                 ((OrderHolder) holder).orderDate.setText(dateFormat.format(orderItem.getTimestamp()));
                 ((OrderHolder) holder).orderBarista.setText("Served by: " + orderItem.getEmployee());
                 ((OrderHolder) holder).orderStatus.setText(orderItem.getStatus());

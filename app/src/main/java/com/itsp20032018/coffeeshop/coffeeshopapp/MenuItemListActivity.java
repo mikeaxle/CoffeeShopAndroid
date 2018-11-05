@@ -26,7 +26,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.MenuEntry;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Order;
@@ -150,12 +149,12 @@ public class MenuItemListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-        Query query = listRef.whereEqualTo("shop", shop.getOwner())
-                .orderBy("name", Query.Direction.ASCENDING);
+//        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+//                .orderBy("name", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<MenuEntry> options = new FirestoreRecyclerOptions.Builder<MenuEntry>()
-                .setQuery(query, MenuEntry.class)
+                .setQuery(listRef, MenuEntry.class)
                 .build();
 
         // assign ItemAdapter, type is the item type to list

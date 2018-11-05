@@ -13,7 +13,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StockItem;
@@ -109,12 +108,12 @@ public class StockItemListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-        Query query = listRef.whereEqualTo("shop", shop.getOwner())
-                .orderBy("name", Query.Direction.ASCENDING);
+//        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+//                .orderBy("name", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<StockItem> options =  new FirestoreRecyclerOptions.Builder<StockItem>()
-                .setQuery(query, StockItem.class)
+                .setQuery(listRef, StockItem.class)
                 .build();
 
 

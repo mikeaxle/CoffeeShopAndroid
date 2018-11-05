@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Order;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
@@ -36,11 +35,12 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
  * An activity representing a list of Orders.
- * lead to a {@link OrderDetailActivity} representing
  */
 public class OrderListActivity extends AppCompatActivity {
     // TAG for device logs
     private static final String TAG = "OrderListActivity";
+
+    int orderNumber = 0;
 
     // FireBase database instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -129,12 +129,12 @@ public class OrderListActivity extends AppCompatActivity {
      */
     private void loadList() {
         // create FireStore query
-        Query query = listRef.whereEqualTo("shop", shop.getOwner())
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+//        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+//                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<Order> options = new FirestoreRecyclerOptions.Builder<Order>()
-                .setQuery(query, Order.class)
+                .setQuery(listRef, Order.class)
                 .build();
 
         // assign ItemAdapter, type is the item type to list
@@ -177,7 +177,7 @@ public class OrderListActivity extends AppCompatActivity {
                     dialogClose = dialogView.findViewById(R.id.orderDialogCloseImageButton);
 
                     // assign up text views
-                    dialogOrderNumber.setText("Order #: " + documentSnapshot.getId());
+                    dialogOrderNumber.setText("Order #: 000" + ++orderNumber);
                     dialogOrderTotal.setText("R" + order.getTotal());
                     dialogOrderItems.setText(order.getOrderItemsString());
                     dialogOrderStatus.setSelection(getIndexOfItem() + 2);

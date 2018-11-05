@@ -528,7 +528,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                         ActionCodeSettings.newBuilder()
                                 // URL you want to redirect back to. The domain (www.example.com) for this
                                 // URL must be whitelisted in the Firebase Console.
-                                .setUrl("https://www.example.com/finishSignUp?cartId=1234")
+                                .setUrl("https://coffee-shop-app-d8f60.firebaseapp.com/?email=" + emailAddress)
                                 // This must be true
                                 .setHandleCodeInApp(true)
                                 .setAndroidPackageName(
@@ -543,19 +543,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                             public void onSuccess(DocumentReference documentReference) {
                                 // show success toast
                                 Toast.makeText(StaffMemberDetailActivity.this, "Staff member added.", Toast.LENGTH_SHORT).show();
-                                finish();
 
-//                                auth.sendSignInLinkToEmail(newStaffMember.getEmailAddress(), actionCodeSettings)
-//                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<Void> task) {
-//                                                if (task.isSuccessful()) {
-//                                                    Log.d(TAG, "Email sent.");
-//                                                    // redirect back to list
-//                                                    finish();
-//                                                }
-//                                            }
-//                                        });
+                                // send email
+                                sendEmailLink(newStaffMember, actionCodeSettings);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -603,6 +593,33 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    private void sendEmailLink(StaffMember newStaffMember, ActionCodeSettings actionCodeSettings) {
+        auth.sendSignInLinkToEmail(newStaffMember.getEmailAddress(), actionCodeSettings)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(StaffMemberDetailActivity.this, "Email sent to " + newStaffMember.getEmailAddress(), Toast.LENGTH_SHORT).show();
+                            // redirect back to list
+                            finish();
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        // hide loading bar
+                        showLoadingBar();
+
+                        Toast.makeText(StaffMemberDetailActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Something went wrong: " + e.getMessage());
+
+                    }
+                });
     }
 
     /**
