@@ -14,6 +14,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.itsp20032018.coffeeshop.coffeeshopapp.adapters.ItemAdapter;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
@@ -106,13 +107,14 @@ public class StaffMemberListActivity extends AppCompatActivity {
      * loadList     method to set up recycler view and load list
      */
     private void loadList() {
+        // TODO: checked logged in user role, hide admin based on result (make different query)
         // create FireStore query
-//        Query query = listRef.whereEqualTo("shop", shop.getOwner())
-//                .orderBy("firstName", Query.Direction.ASCENDING);
+        Query query = listRef.whereEqualTo("shop", shop.getOwner())
+                .orderBy("firstName", Query.Direction.ASCENDING);
 
         // create FireStore recycler options
         FirestoreRecyclerOptions<StaffMember> options =  new FirestoreRecyclerOptions.Builder<StaffMember>()
-                .setQuery(listRef, StaffMember.class)
+                .setQuery(query, StaffMember.class)
                 .build();
 
         // assign ItemAdapter, type is the item type to list

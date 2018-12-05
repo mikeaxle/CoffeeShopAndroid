@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,11 +29,14 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.Shop;
 import com.itsp20032018.coffeeshop.coffeeshopapp.model.StaffMember;
+import com.itsp20032018.coffeeshop.coffeeshopapp.utils.RandomPasswordGenerator;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.book.BookLoading;
 
@@ -42,6 +44,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -214,7 +218,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                         gender.setSelection(getIndexOfItem("gender") + 1);
                         address.setText(staffMember.getAddress());
                         phoneNumber.setText(staffMember.getPhoneNumber());
-                        emailAddress.setText(staffMember.getEmailAddress());
+                        emailAddress.setText(staffMember.getEmail());
 
                         // TODO: fix bug where image changed does not load into imageview because of real time sync
                     }
@@ -283,7 +287,9 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 save();
+//                test();
             }
+
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -326,7 +332,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                             staffMember = documentSnapshot.toObject(StaffMember.class);
 
                             // assign view
-                            staffID.setText("staff ID: " + documentSnapshot.getId());
+                            staffID.setText("staff ID: " + staffMember.getUid());
                             firstName.setText(staffMember.getFirstName());
                             lastName.setText(staffMember.getLastName());
 
@@ -342,7 +348,10 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                             gender.setSelection(getIndexOfItem("gender") + 1);
                             address.setText(staffMember.getAddress());
                             phoneNumber.setText(staffMember.getPhoneNumber());
-                            emailAddress.setText(staffMember.getEmailAddress());
+                            emailAddress.setText(staffMember.getEmail());
+
+                            // make email address non editable
+                            emailAddress.setEnabled(false);
 
                             if (!staffMember.getImage().equals(""))
                                 Picasso.get().load(staffMember.getImage()).into(image);
@@ -411,12 +420,13 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
             newStaffMember.setRole(role.getItemAtPosition(role.getSelectedItemPosition() - 1).toString());
         } else {
            if(staffMember.getRole().equals("Admin")) newStaffMember.setRole("Admin");
+           newStaffMember.setUid(staffMember.getUid());
         }
 
         newStaffMember.setGender(gender.getItemAtPosition(gender.getSelectedItemPosition() - 1).toString());
         newStaffMember.setAddress(address.getText().toString());
         newStaffMember.setPhoneNumber(phoneNumber.getText().toString());
-        newStaffMember.setEmailAddress(emailAddress.getText().toString());
+        newStaffMember.setEmail(emailAddress.getText().toString());
         newStaffMember.setImage("https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
         newStaffMember.setShop(shop.getOwner());
 
@@ -488,6 +498,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         }
     }
 
+
     /**
      * showLoadingBar       method to show/hide loading bar
      */
@@ -523,29 +534,35 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         switch (mode) {
             // adding new item to FireBase
             case "add":
-                // set action settings
-                ActionCodeSettings actionCodeSettings =
-                        ActionCodeSettings.newBuilder()
-                                // URL you want to redirect back to. The domain (www.example.com) for this
-                                // URL must be whitelisted in the Firebase Console.
-                                .setUrl("https://coffee-shop-app-d8f60.firebaseapp.com/?email=" + emailAddress)
-                                // This must be true
-                                .setHandleCodeInApp(true)
-                                .setAndroidPackageName(
-                                        "com.itsp20032018.coffeeshop.coffeeshopapp",
-                                        true, /* installIfNotAvailable */
-                                        "19"    /* minimumVersion */)
-                                .build();
+                // generate new random password
+                String password = RandomPasswordGenerator.generatePassword(8, RandomPasswordGenerator.ALPHA_CAPS + RandomPasswordGenerator.NUMERIC);
 
-                db.collection("staff").add(newStaffMember)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                // add password to newStaff Member
+                Map<String, Object> data = new HashMap<>();
+                data.put("firstName", newStaffMember.getFirstName());
+                data.put("lastName", newStaffMember.getLastName());
+                data.put("role", newStaffMember.getRole());
+                data.put("gender", newStaffMember.getGender());
+                data.put("address", newStaffMember.getAddress());
+                data.put("phoneNumber", newStaffMember.getPhoneNumber());
+                data.put("email", newStaffMember.getEmail());
+                data.put("image", newStaffMember.getImage());
+                data.put("shop", newStaffMember.getShop());
+                data.put("password", password);
+
+
+                // call create new user function from firebase
+                FirebaseFunctions.getInstance()
+                        .getHttpsCallable("createUser")
+                        .call(data)
+                        .addOnSuccessListener(new OnSuccessListener<HttpsCallableResult>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
+                            public void onSuccess(HttpsCallableResult httpsCallableResult) {
                                 // show success toast
-                                Toast.makeText(StaffMemberDetailActivity.this, "Staff member added.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(StaffMemberDetailActivity.this, "New staff member added, welcome e-mail sent to: " + newStaffMember.getEmail() + "!", Toast.LENGTH_SHORT).show();
 
-                                // send email
-                                sendEmailLink(newStaffMember, actionCodeSettings);
+                                // redirect back to list
+                                finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -561,6 +578,7 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
                                 showLoadingBar();
                             }
                         });
+                
 
 
                 break;
@@ -595,32 +613,6 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void sendEmailLink(StaffMember newStaffMember, ActionCodeSettings actionCodeSettings) {
-        auth.sendSignInLinkToEmail(newStaffMember.getEmailAddress(), actionCodeSettings)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(StaffMemberDetailActivity.this, "Email sent to " + newStaffMember.getEmailAddress(), Toast.LENGTH_SHORT).show();
-                            // redirect back to list
-                            finish();
-
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        // hide loading bar
-                        showLoadingBar();
-
-                        Toast.makeText(StaffMemberDetailActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "Something went wrong: " + e.getMessage());
-
-                    }
-                });
-    }
 
     /**
      * deleteItem       method to delete item from FireStore
@@ -660,5 +652,13 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
+    // class for quick testing
+    private void test(){
+        String newPassword = RandomPasswordGenerator.generatePassword(8, RandomPasswordGenerator.ALPHA_CAPS + RandomPasswordGenerator.NUMERIC);
+        Toast.makeText(this, "New Password:" + newPassword, Toast.LENGTH_SHORT).show();
+    }
+
 
 }

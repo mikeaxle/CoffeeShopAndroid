@@ -25,9 +25,11 @@ public class StaffMember {
     private String gender;
     private String address;
     private String phoneNumber;
-    private String emailAddress;
+    private String email;
     private String image;
     private String shop;
+    private String uid;
+    private String passWord;
 
     // no args constructor, needed to use with FireStore
     public StaffMember(){}
@@ -40,19 +42,62 @@ public class StaffMember {
      * @param gender
      * @param address
      * @param phoneNumber
-     * @param emailAddress
+     * @param email
      * @param image
      */
-    public StaffMember(String firstName, String lastName, String role, String gender, String address, String phoneNumber, String emailAddress, String image, String shop) {
+    public StaffMember(String firstName, String lastName, String role, String gender, String address, String phoneNumber, String email, String image, String shop, String uid) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.gender = gender;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
+        this.email = email;
         this.image = image;
         this.shop = shop;
+        this.uid = uid;
+    }
+
+    /**
+     * Constructor with password
+     * @param firstName
+     * @param lastName
+     * @param role
+     * @param gender
+     * @param address
+     * @param phoneNumber
+     * @param emailAddress
+     * @param image
+     * @param password
+     */
+    public StaffMember(String firstName, String lastName, String role, String gender, String address, String phoneNumber, String emailAddress, String image, String shop, String uid, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = emailAddress;
+        this.image = image;
+        this.shop = shop;
+        this.uid = uid;
+        this.passWord = password;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getShop() {
@@ -119,11 +164,11 @@ public class StaffMember {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

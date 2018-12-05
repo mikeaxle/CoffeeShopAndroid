@@ -139,7 +139,7 @@ public class registrationScreen extends AppCompatActivity implements View.OnClic
                         staffMember.setGender("Male");
                         staffMember.setRole("Admin");
                         staffMember.setPhoneNumber("0000000000");
-                        staffMember.setEmailAddress(task.getResult().getUser().getEmail());
+                        staffMember.setEmail(task.getResult().getUser().getEmail());
                         staffMember.setImage("https://firebasestorage.googleapis.com/v0/b/coffee-shop-app-d8f60.appspot.com/o/staff%2Fsp_staff.png?alt=media&token=b879ab06-4c68-4bbf-923a-e4111ecc7616");
 
                         // create store with UID and name linked, UID is also firebase ID of shop
