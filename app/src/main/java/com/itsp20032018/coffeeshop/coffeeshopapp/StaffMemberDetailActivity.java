@@ -585,28 +585,22 @@ public class StaffMemberDetailActivity extends AppCompatActivity {
             case "edit":
                 // update existing item in FireBase
                 itemRef.set(newStaffMember, SetOptions.merge())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // show success toast
-                                Toast.makeText(StaffMemberDetailActivity.this, "Changes saved successfully.", Toast.LENGTH_SHORT).show();
+                        .addOnSuccessListener(aVoid -> {
+                            // show success toast
+                            Toast.makeText(StaffMemberDetailActivity.this, "Changes saved successfully.", Toast.LENGTH_SHORT).show();
 
-                                // redirect back to list
-                                finish();
-                            }
+                            // redirect back to list
+                            finish();
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // show failure toast
-                                Toast.makeText(StaffMemberDetailActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        .addOnFailureListener(e -> {
+                            // show failure toast
+                            Toast.makeText(StaffMemberDetailActivity.this, "Something went wrong: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                // log error
-                                Log.e(TAG, "Something went wrong: " + e.getMessage());
+                            // log error
+                            Log.e(TAG, "Something went wrong: " + e.getMessage());
 
-                                // hide loading bar
-                                showLoadingBar();
-                            }
+                            // hide loading bar
+                            showLoadingBar();
                         });
                 break;
 

@@ -206,32 +206,29 @@ public class LoginScreen extends AppCompatActivity {
 
                     }
                 })
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        // dismiss progress dialog
-                        progressDialog.dismiss();
+                .addOnCompleteListener(task -> {
+                    // dismiss progress dialog
+                    progressDialog.dismiss();
 
-                        // check if task was successful
-                        if (task.isSuccessful()) {
+                    // check if task was successful
+                    if (task.isSuccessful()) {
 
-                            // get shop
-                            shop = task.getResult().getDocuments().get(0).toObject(Shop.class);
+                        // get shop
+                        shop = task.getResult().getDocuments().get(0).toObject(Shop.class);
 
-                            // write shop to local storage
-                            tinyDB = new TinyDB(getApplicationContext());
-                            tinyDB.putObject("SHOP", shop);
+                        // write shop to local storage
+                        tinyDB = new TinyDB(getApplicationContext());
+                        tinyDB.putObject("SHOP", shop);
 
 
-                            // destroy activity and send to main screen
-                            finish();
-                            Toast.makeText(LoginScreen.this, "Login successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        } else {
-                            Toast.makeText(LoginScreen.this, "Something went wrong: " + task.getException(), Toast.LENGTH_LONG).show();
-                        }
-
+                        // destroy activity and send to main screen
+                        finish();
+                        Toast.makeText(LoginScreen.this, "Login successfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    } else {
+                        Toast.makeText(LoginScreen.this, "Something went wrong: " + task.getException(), Toast.LENGTH_LONG).show();
                     }
+
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
